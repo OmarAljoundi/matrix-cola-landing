@@ -49,10 +49,6 @@ a:hover{color:var(--secondary);}
 @keyframes blobD{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-90px,-40px) scale(1.18)}}
 @keyframes auroraDrift{0%{background-position:0% 50%,100% 50%,50% 0%}50%{background-position:100% 50%,0% 50%,50% 100%}100%{background-position:0% 50%,100% 50%,50% 0%}}
 @keyframes gridPan{from{background-position:0 0}to{background-position:64px 64px}}
-@keyframes sheenSlide{0%{transform:translateX(-40%)}100%{transform:translateX(40%)}}
-@keyframes shimmerText{from{background-position:-160% 0}to{background-position:260% 0}}
-@keyframes waveShift{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-@keyframes cursorPulse{0%,100%{transform:translate(-50%,-50%) scale(1);opacity:.9}50%{transform:translate(-50%,-50%) scale(1.35);opacity:.5}}
 @keyframes ringPop{0%{transform:translate(-50%,-50%) scale(.2);opacity:.7}100%{transform:translate(-50%,-50%) scale(2.4);opacity:0}}
 @media (hover:none),(pointer:coarse){[data-cursor-ring],[data-glow]{display:none !important}}
 @media (hover:hover) and (pointer:fine){html.glow-cursor,html.glow-cursor a,html.glow-cursor button,html.glow-cursor [data-magnetic]{cursor:none !important}}
@@ -432,13 +428,8 @@ class Component extends DCLogic {
     h._words = words;
     if (h.hasAttribute('data-uline')) {
       const u = document.createElement('span');
-      if (h.hasAttribute('data-burst')) {
-        h.style.position = 'relative';
-        u.style.cssText = 'position:absolute;left:50%;bottom:-20px;margin-left:-48px;width:96px;height:4px;border-radius:2px;background:var(--destructive);transform:scaleX(0);transform-origin:center;transition:transform .5s var(--ease-out-expo)';
-      } else {
-        const left = getComputedStyle(h).textAlign === 'left';
-        u.style.cssText = 'display:block;height:4px;width:96px;border-radius:2px;background:var(--destructive);margin:' + (left ? '16px auto 0 2px' : '16px auto 0 auto') + ';transform:scaleX(0);transform-origin:' + (left ? 'left' : 'center') + ' center;transition:transform .5s var(--ease-out-expo)';
-      }
+      const left = getComputedStyle(h).textAlign === 'left';
+      u.style.cssText = 'display:block;height:4px;width:96px;border-radius:2px;background:var(--destructive);margin:' + (left ? '16px auto 0 2px' : '16px auto 0 auto') + ';transform:scaleX(0);transform-origin:' + (left ? 'left' : 'center') + ' center;transition:transform .5s var(--ease-out-expo)';
       h.appendChild(u); h._uline = u;
     }
   }
@@ -522,7 +513,6 @@ class Component extends DCLogic {
         h._uline.style.transform = 'scaleX(1)';
         setTimeout(() => { h._uline.style.transition = 'opacity .4s ease'; h._uline.style.opacity = '0'; }, 800);
       }, last + 800 + 200);
-      if (h.hasAttribute('data-burst')) setTimeout(() => this.burstFooter(), last + 400);
     };
     this._pendingH = new Set(heads);
     this._instantHead = (h) => {
@@ -599,18 +589,6 @@ class Component extends DCLogic {
     });
   }
 
-  makeBubble(box, o){
-    const b = document.createElement('span');
-    b.style.cssText = 'position:absolute;left:' + o.x.toFixed(1) + '%;bottom:-16px;width:' + o.s.toFixed(0) + 'px;height:' + o.s.toFixed(0) + 'px;border-radius:9999px;background:' + o.color + ';opacity:0;will-change:transform';
-    box.appendChild(b);
-    b.animate([
-      { transform:'translate(0,0) scale(1)', opacity:0, offset:0 },
-      { opacity:o.op, offset:0.15 },
-      { transform:'translate(' + o.wob.toFixed(0) + 'px,-' + (o.rise * 0.5).toFixed(0) + 'px) scale(1.05)', offset:0.55 },
-      { opacity:o.op, offset:0.82 },
-      { transform:'translate(' + (-o.wob).toFixed(0) + 'px,-' + o.rise.toFixed(0) + 'px) scale(1.12)', opacity:0, offset:1 }
-    ], { duration:o.dur * 1000, delay:o.delay * 1000, iterations:Infinity, easing:'ease-in-out' });
-  }
   glossBubble(o){
     const b = document.createElement('span');
     const tint = o.blue ? 'var(--secondary)' : 'var(--primary)';
@@ -651,7 +629,7 @@ class Component extends DCLogic {
     if (amb) [
       { n:18, blur:true,  op:0.14, sMin:7, sMax:17, dMin:20, dMax:30, rate:0.02, spread:'full' },
       { n:26, blur:false, op:0.24, sMin:6, sMax:13, dMin:14, dMax:22, rate:0.05, spread:'full' }
-    ].forEach(cfg => { const layer = document.createElement('div'); layer.style.cssText = 'position:fixed;left:0;right:0;bottom:0;top:0;will-change:transform'; amb.appendChild(layer); (this.ambLayers = this.ambLayers || []).push({ el:layer, rate:cfg.rate }); for (let i = 0; i < cfg.n; i++) this.spawnFoot(layer, cfg, true); });
+    ].forEach(cfg => { const layer = document.createElement('div'); layer.style.cssText = 'position:fixed;left:0;right:0;bottom:0;top:0;will-change:transform'; amb.appendChild(layer); for (let i = 0; i < cfg.n; i++) this.spawnFoot(layer, cfg, true); });
     // per-section bubble fields (hero, news, flavors...)
     secs.forEach(sec => {
       const n = parseInt(sec.getAttribute('data-seed-count') || '10', 10);
@@ -676,23 +654,6 @@ class Component extends DCLogic {
       for (let i = 0; i < cfg.n; i++) this.spawnFoot(layer, cfg, true);
     });
   }
-  burstFooter(){
-    if (this.R || !this.footBox || this._bursted) return;
-    this._bursted = true;
-    for (let i = 0; i < 8; i++) {
-      const b = this.glossBubble({ s:Math.round(9 + Math.random() * 7), blue:i % 4 === 0, blur:false });
-      b.style.left = (42 + Math.random() * 16).toFixed(1) + '%'; b.style.bottom = '38%';
-      this.footBox.appendChild(b);
-      const rise = 90 + Math.random() * 50;
-      const a = b.animate([
-        { transform:'translateY(0) scale(.8)', opacity:0 },
-        { opacity:0.55, offset:0.2 },
-        { transform:'translateY(-' + rise.toFixed(0) + 'px) scale(1.25)', opacity:0 }
-      ], { duration:1300, delay:i * 70, easing:'cubic-bezier(.3,.8,.4,1)' });
-      a.onfinish = () => b.remove();
-    }
-  }
-
   setupFizz(R){
     if (R) return;
     Array.prototype.slice.call(document.querySelectorAll('[data-canitem]')).forEach(item => {
