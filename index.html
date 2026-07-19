@@ -46,6 +46,16 @@ a:hover{color:var(--secondary);}
 @keyframes blobA{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(80px,50px) scale(1.15)}}
 @keyframes blobB{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-70px,70px) scale(1.1)}}
 @keyframes blobC{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(60px,-60px) scale(1.2)}}
+@keyframes blobD{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-90px,-40px) scale(1.18)}}
+@keyframes auroraDrift{0%{background-position:0% 50%,100% 50%,50% 0%}50%{background-position:100% 50%,0% 50%,50% 100%}100%{background-position:0% 50%,100% 50%,50% 0%}}
+@keyframes gridPan{from{background-position:0 0}to{background-position:64px 64px}}
+@keyframes sheenSlide{0%{transform:translateX(-40%)}100%{transform:translateX(40%)}}
+@keyframes shimmerText{from{background-position:-160% 0}to{background-position:260% 0}}
+@keyframes waveShift{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes cursorPulse{0%,100%{transform:translate(-50%,-50%) scale(1);opacity:.9}50%{transform:translate(-50%,-50%) scale(1.35);opacity:.5}}
+@keyframes ringPop{0%{transform:translate(-50%,-50%) scale(.2);opacity:.7}100%{transform:translate(-50%,-50%) scale(2.4);opacity:0}}
+@media (hover:none),(pointer:coarse){[data-cursor-ring],[data-glow]{display:none !important}}
+@media (hover:hover) and (pointer:fine){html.glow-cursor,html.glow-cursor a,html.glow-cursor button,html.glow-cursor [data-magnetic]{cursor:none !important}}
 @media (max-width:1024px){
  [data-pad]{padding-inline:24px !important;}
  [data-tile]{width:150px !important;height:150px !important;}
@@ -70,33 +80,40 @@ a:hover{color:var(--secondary);}
  [data-flmarq] [data-mq]{gap:clamp(10px,3vw,18px) !important;padding-inline:9px !important;}
 }
 @media (max-width:480px){
- [data-hword]{display:none !important;}
  [data-hlogo]{height:36px !important;}
 }
 @media (prefers-reduced-motion: reduce){*{animation-duration:.001ms !important;animation-iteration-count:1 !important;animation-delay:0ms !important;transition-duration:.001ms !important;}}
 </style>
 <script src="_ds/matrix-d9cd55e2-8b81-4e7c-8034-e43a1b62f733/_ds_bundle.js"></script>
 </helmet>
-<div style="position:relative;background:var(--background);color:var(--foreground);font-family:var(--font-sans);overflow-x:clip;min-height:100vh">
+<div style="position:relative;color:var(--foreground);font-family:var(--font-sans);overflow-x:clip;min-height:100vh;background:var(--background)">
+
+  <div aria-hidden="true" style="position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(72% 58% at 12% 8%,color-mix(in srgb,var(--primary) 26%,transparent),transparent 60%),radial-gradient(58% 55% at 92% 22%,color-mix(in srgb,var(--secondary) 22%,transparent),transparent 62%),radial-gradient(60% 55% at 82% 82%,color-mix(in srgb,var(--chart-1) 14%,transparent),transparent 60%),radial-gradient(68% 62% at 40% 106%,color-mix(in srgb,var(--primary) 20%,transparent),transparent 60%);background-size:190% 190%,190% 190%,190% 190%,190% 190%;animation:auroraDrift 34s ease-in-out infinite;will-change:background-position"></div>
 
   <div aria-hidden="true" style="position:absolute;inset:0;overflow:hidden;z-index:0;pointer-events:none">
-    <div data-blob data-rate="0.85" style="position:absolute;top:6%;left:-7%;width:520px;height:520px;border-radius:9999px;background:var(--primary);opacity:.06;filter:blur(96px);animation:blobA 60s ease-in-out infinite;will-change:transform"></div>
-    <div data-blob data-rate="1" style="position:absolute;top:40%;right:-9%;width:560px;height:560px;border-radius:9999px;background:var(--chart-1);opacity:.06;filter:blur(96px);animation:blobB 60s ease-in-out infinite;will-change:transform"></div>
-    <div data-blob data-rate="1.15" style="position:absolute;top:74%;left:5%;width:500px;height:500px;border-radius:9999px;background:var(--chart-3);opacity:.05;filter:blur(96px);animation:blobC 60s ease-in-out infinite;will-change:transform"></div>
+    <div data-blob data-rate="0.85" style="position:absolute;top:3%;left:-8%;width:580px;height:580px;border-radius:9999px;background:var(--primary);opacity:.18;filter:blur(88px);animation:blobA 60s ease-in-out infinite;will-change:transform"></div>
+    <div data-blob data-rate="1" style="position:absolute;top:30%;right:-10%;width:600px;height:600px;border-radius:9999px;background:var(--secondary);opacity:.15;filter:blur(90px);animation:blobB 60s ease-in-out infinite;will-change:transform"></div>
+    <div data-blob data-rate="1.15" style="position:absolute;top:64%;left:0%;width:560px;height:560px;border-radius:9999px;background:var(--primary);opacity:.13;filter:blur(92px);animation:blobC 66s ease-in-out infinite;will-change:transform"></div>
+    <div data-blob data-rate="0.7" style="position:absolute;top:46%;left:40%;width:440px;height:440px;border-radius:9999px;background:var(--chart-1);opacity:.09;filter:blur(96px);animation:blobD 72s ease-in-out infinite;will-change:transform"></div>
+    <div style="position:absolute;inset:0;background-image:linear-gradient(color-mix(in srgb,var(--primary) 6%,transparent) 1px,transparent 1px),linear-gradient(90deg,color-mix(in srgb,var(--primary) 6%,transparent) 1px,transparent 1px);background-size:64px 64px;-webkit-mask-image:radial-gradient(120% 90% at 50% 20%,#000,transparent 78%);mask-image:radial-gradient(120% 90% at 50% 20%,#000,transparent 78%);animation:gridPan 26s linear infinite;opacity:.5"></div>
     <div data-bubbles style="position:absolute;inset:0;overflow:hidden"></div>
+    <div style="position:absolute;inset:0;opacity:.045;mix-blend-mode:multiply;background-image:url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22160%22 height=%22160%22><filter id=%22n%22><feTurbulence type=%22fractalNoise%22 baseFrequency=%220.85%22 numOctaves=%222%22 stitchTiles=%22stitch%22/></filter><rect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23n)%22/></svg>')"></div>
   </div>
+
+  <div aria-hidden="true" data-spotlight style="position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity .6s ease;background:radial-gradient(320px 320px at 50% 50%,color-mix(in srgb,var(--primary) 20%,transparent),transparent 70%);mix-blend-mode:screen;will-change:transform"></div>
+  <canvas aria-hidden="true" data-fizzcanvas style="position:fixed;inset:0;z-index:52;pointer-events:none"></canvas>
+  <div aria-hidden="true" data-glow style="position:fixed;left:0;top:0;z-index:9998;pointer-events:none;width:46px;height:46px;border-radius:9999px;background:radial-gradient(circle,color-mix(in srgb,var(--primary) 62%,transparent),color-mix(in srgb,var(--primary) 26%,transparent) 45%,transparent 72%);filter:blur(5px);mix-blend-mode:multiply;transform:translate(-50%,-50%);opacity:0;transition:opacity .35s ease,width .2s ease,height .2s ease"></div>
 
   <div style="position:relative;z-index:1">
 
+    <div aria-hidden="true" data-scrollfizz style="position:fixed;left:0;top:0;height:3px;width:100%;transform-origin:0 50%;transform:scaleX(0);z-index:90;background:linear-gradient(90deg,var(--primary),var(--secondary) 45%,var(--destructive));box-shadow:0 1px 8px color-mix(in srgb,var(--primary) 50%,transparent);pointer-events:none"></div>
     <div aria-hidden="true" data-navdim style="position:fixed;inset:0;z-index:55;pointer-events:none;background:color-mix(in srgb,var(--foreground) 48%,transparent);opacity:0;transition:opacity .4s ease"></div>
     <header onMouseEnter="{{ navEnter }}" onMouseLeave="{{ navLeave }}" style="position:sticky;top:0;z-index:60;padding:0 12px">
       <div style="background:{{ headerBg }};-webkit-backdrop-filter:blur(20px) saturate(1.6);backdrop-filter:blur(20px) saturate(1.6);border-radius:0 0 18px 18px;overflow:hidden;box-shadow:{{ headerShadow }};transition:box-shadow .3s ease,background .3s ease">
       <div data-pad style="max-width:1280px;margin:0 auto;padding-inline:32px;padding-block:{{ headerPadY }};min-height:64px;display:flex;align-items:center;justify-content:space-between;gap:24px;transition:padding-block .25s ease;animation:headFade .45s var(--ease-out-expo) both;animation-delay:.1s">
         <div style="display:flex;align-items:center;gap:16px;flex:none">
           <a href="#" style="display:flex;align-items:center;gap:5px;position:relative;overflow:hidden">
-            <span data-hword style="font-family:var(--font-sans);font-weight:800;font-size:14px;letter-spacing:.06em;color:var(--foreground)">THE</span>
             <img data-hlogo src="assets/logos/logo-primary-on-white.png" alt="Matrix Cola" style="height:46px;width:auto">
-            <span data-hword style="font-family:var(--font-sans);font-weight:800;font-size:14px;letter-spacing:.06em;color:var(--foreground)">COMPANY</span>
             <span data-logosweep style="position:absolute;top:0;bottom:0;left:0;width:40%;background:linear-gradient(100deg,transparent,color-mix(in srgb,var(--card) 85%,transparent),transparent);transform:translateX(-130%) skewX(-18deg);pointer-events:none"></span>
           </a>
           <button data-magnetic style="display:inline-flex;align-items:center;gap:6px;border:1.5px solid var(--input);background:transparent;border-radius:9999px;padding:7px 13px;cursor:pointer;color:var(--primary);font-family:var(--font-sans);font-weight:700;font-size:13px;transition:border-color .2s,color .2s" style-hover="border-color:var(--primary);color:var(--secondary)" style-focus="outline:2px solid var(--ring);outline-offset:2px">
@@ -127,7 +144,8 @@ a:hover{color:var(--secondary);}
     </header>
 
     <section style="position:relative;padding:44px 0;overflow:hidden">
-      <div style="display:flex;flex-direction:column;gap:16px">
+      <div data-secbubbles data-seed-count="14" style="position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden"></div>
+      <div style="display:flex;flex-direction:column;gap:16px;position:relative;z-index:1">
         <div style="overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent);mask-image:linear-gradient(90deg,transparent,#000 7%,#000 93%,transparent)">
           <div data-hero-skew style="will-change:transform">
             <div data-mq style="display:flex;gap:16px;width:max-content;padding-inline:8px;animation:mqL 55s linear infinite;will-change:transform">
@@ -168,8 +186,9 @@ a:hover{color:var(--secondary);}
       </div>
     </section>
 
-    <section style="padding:56px 0 24px">
-      <div data-pad style="max-width:1180px;margin:0 auto;padding-inline:32px">
+    <section style="padding:56px 0 24px;position:relative;overflow:hidden">
+      <div data-secbubbles data-seed-count="12" style="position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden"></div>
+      <div data-pad style="max-width:1180px;margin:0 auto;padding-inline:32px;position:relative;z-index:1">
         <h2 data-words data-uline style="text-align:center;font-family:var(--font-heading);font-weight:700;color:var(--primary);font-size:clamp(24px,4.6vw,46px);margin:0 0 46px">Dive Into Our Latest News</h2>
         <div data-rsp="news" style="display:grid;grid-template-columns:repeat(3,1fr);gap:30px;align-items:start">
           <sc-for list="{{ newsCards }}" as="card" hint-placeholder-count="3">
@@ -210,6 +229,7 @@ a:hover{color:var(--secondary);}
     </section>
 
     <section style="padding:60px 0 74px;position:relative;overflow-x:clip">
+      <div data-secbubbles data-seed-count="16" style="position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden"></div>
       <div aria-hidden="true" style="position:absolute;left:0;top:0;bottom:0;width:9%;max-width:150px;background:linear-gradient(90deg,var(--background),transparent);pointer-events:none;z-index:40"></div>
       <div aria-hidden="true" style="position:absolute;right:0;top:0;bottom:0;width:9%;max-width:150px;background:linear-gradient(270deg,var(--background),transparent);pointer-events:none;z-index:40"></div>
       <div data-pad style="max-width:1180px;margin:0 auto;padding-inline:32px">
@@ -226,7 +246,7 @@ a:hover{color:var(--secondary);}
                   </sc-if>
                   <sc-if value="{{ cell.isCan }}" hint-placeholder-val="{{ false }}">
                     <div data-canitem onMouseEnter="{{ cell.onEnter }}" onMouseLeave="{{ cell.onLeave }}" style="position:relative;flex:none;z-index:{{ cell.zTop }};cursor:pointer">
-                      <div data-ccircle style="position:relative;width:160px;height:160px;border-radius:9999px;background:var(--muted);box-shadow:{{ cell.circleShadow }};transition:box-shadow .3s ease">
+                      <div data-ccircle style="position:relative;width:160px;height:160px;border-radius:9999px;background:radial-gradient(circle at 32% 28%,color-mix(in srgb,var(--card) 82%,transparent),color-mix(in srgb,var(--primary) 12%,transparent) 78%,color-mix(in srgb,var(--secondary) 16%,transparent));border:1px solid color-mix(in srgb,var(--card) 60%,transparent);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);box-shadow:{{ cell.circleShadow }};transition:box-shadow .3s ease">
                         <div data-fizz style="position:absolute;inset:0;pointer-events:none"></div>
                         <div data-canwrap style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%)">
                           <img data-canimg src="{{ cell.src }}" alt="" loading="lazy" style="display:block;height:140px;width:auto;max-width:none;object-fit:contain;transform-origin:center;transform:{{ cell.canTransform }};filter:{{ cell.canFilter }};transition:transform .4s var(--ease-spring-can),filter .3s ease">
@@ -251,8 +271,9 @@ a:hover{color:var(--secondary);}
       </div>
     </section>
 
-    <section style="padding:60px 0 84px">
-      <div data-pad style="max-width:1180px;margin:0 auto;padding-inline:32px">
+    <section style="padding:60px 0 84px;position:relative;overflow:hidden">
+      <div data-secbubbles data-seed-count="12" style="position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden"></div>
+      <div data-pad style="max-width:1180px;margin:0 auto;padding-inline:32px;position:relative;z-index:1">
         <h2 data-words data-uline data-bylines style="font-family:var(--font-heading);font-weight:700;color:var(--secondary);font-size:clamp(28px,5.8vw,64px);line-height:1.06;text-align:left;margin:0 0 56px">Unleash<br><span style="display:inline-block;padding-left:1.6em">Your Potential</span></h2>
         <div data-rsp="careers" style="display:grid;grid-template-columns:repeat(3,1fr);gap:34px;align-items:start">
           <sc-for list="{{ careerCards }}" as="card" hint-placeholder-count="3">
@@ -275,17 +296,7 @@ a:hover{color:var(--secondary);}
     </section>
 
     <footer style="position:relative;overflow:hidden;padding:56px 0 60px"><div data-footerbubbles style="position:absolute;inset:0;z-index:0;pointer-events:none"></div><div style="position:relative;z-index:1">
-      <div style="height:1px;background:var(--border);margin-bottom:44px"></div>
-      <div data-pad style="max-width:1180px;margin:0 auto;padding-inline:32px">
-        <div data-words data-uline data-burst style="display:flex;justify-content:center">
-          <div style="display:flex;align-items:center;gap:9px">
-            <span style="font-family:var(--font-sans);font-weight:800;font-size:22px;color:var(--secondary)">THE</span>
-            <img src="assets/logos/logo-primary-on-white.png" alt="Matrix Cola" style="height:70px;width:auto">
-            <span style="font-family:var(--font-sans);font-weight:800;font-size:22px;color:var(--secondary)">COMPANY</span>
-          </div>
-        </div>
-      </div>
-      <div style="height:1px;background:var(--border);margin:38px 0 40px"></div>
+      <div style="height:1px;background:var(--border);margin-bottom:40px"></div>
       <div data-pad style="max-width:1180px;margin:0 auto;padding-inline:32px">
         <div data-rsp="foot" data-reveal style="display:grid;grid-template-columns:repeat(4,1fr);gap:28px">
           <sc-for list="{{ footerCols }}" as="col" hint-placeholder-count="3">
@@ -331,6 +342,9 @@ class Component extends DCLogic {
     this.setupHeroAssembly(R);
     this.setupBubbles(R);
     this.setupFizz(R);
+    this.setupCursorFizz(R);
+    this.setupCanTilt(R);
+    this.setupHeroParallax(R);
     this._sweep = () => {
       if (this._pending) this._pending.forEach(el => { if (el.getBoundingClientRect().bottom < 60) this._instantShow(el); });
       if (this._pendingH) this._pendingH.forEach(h => { if (h.getBoundingClientRect().bottom < 60) this._instantHead(h); });
@@ -362,6 +376,12 @@ class Component extends DCLogic {
     if (this._ioH) this._ioH.disconnect();
     if (this._ioCans) this._ioCans.disconnect();
     if (this._raf) cancelAnimationFrame(this._raf);
+    if (this._fizzRaf) cancelAnimationFrame(this._fizzRaf);
+    if (this._heroPxRaf) cancelAnimationFrame(this._heroPxRaf);
+    if (this._cursorMove) window.removeEventListener('mousemove', this._cursorMove);
+    if (this._cursorClick) window.removeEventListener('mousedown', this._cursorClick);
+    if (this._cursorLeave) document.removeEventListener('mouseleave', this._cursorLeave);
+    if (this._onResizeFizz) window.removeEventListener('resize', this._onResizeFizz);
   }
 
   componentDidUpdate(){
@@ -601,7 +621,7 @@ class Component extends DCLogic {
   }
   spawnFoot(layer, cfg, seed){
     const b = this.glossBubble({ s:Math.round(cfg.sMin + Math.random() * (cfg.sMax - cfg.sMin)), blue:Math.random() < 0.18, blur:cfg.blur });
-    const x = Math.random() < 0.45 ? 36 + Math.random() * 28 : Math.random() * 100;
+    const x = cfg.spread === 'full' ? Math.random() * 100 : (Math.random() < 0.45 ? 36 + Math.random() * 28 : Math.random() * 100);
     b.style.left = x.toFixed(1) + '%'; b.style.bottom = '-18px';
     layer.appendChild(b);
     const H = layer.clientHeight || 340;
@@ -620,17 +640,34 @@ class Component extends DCLogic {
   setupBubbles(R){
     const amb = document.querySelector('[data-bubbles]');
     const foot = this.footBox = document.querySelector('[data-footerbubbles]');
+    const secs = Array.prototype.slice.call(document.querySelectorAll('[data-secbubbles]'));
     if (R) {
+      if (amb) for (let i = 0; i < 18; i++) { const b = this.glossBubble({ s:Math.round(5 + Math.random() * 11), blue:i % 4 === 0, blur:i % 3 === 0 }); b.style.left = (Math.random() * 100).toFixed(1) + '%'; b.style.bottom = (Math.random() * 96).toFixed(0) + '%'; b.style.opacity = '.14'; amb.appendChild(b); }
+      secs.forEach(s => { const n = parseInt(s.getAttribute('data-seed-count') || '10', 10); for (let i = 0; i < n; i++) { const b = this.glossBubble({ s:Math.round(5 + Math.random() * 12), blue:i % 4 === 0, blur:false }); b.style.left = (Math.random() * 100).toFixed(1) + '%'; b.style.bottom = (Math.random() * 88).toFixed(0) + '%'; b.style.opacity = '.16'; s.appendChild(b); } });
       if (foot) for (let i = 0; i < 16; i++) { const b = this.glossBubble({ s:Math.round(4 + Math.random() * 10), blue:i % 4 === 0, blur:false }); b.style.left = (Math.random() * 100).toFixed(1) + '%'; b.style.bottom = (Math.random() * 78).toFixed(0) + '%'; b.style.opacity = '.18'; foot.appendChild(b); }
       return;
     }
-    if (amb) for (let i = 0; i < 12; i++) this.makeBubble(amb, { x:Math.random() * 100, s:5 + Math.random() * 8, rise:window.innerHeight * 0.9, dur:18 + Math.random() * 12, delay:-Math.random() * 30, op:0.05, wob:(Math.random() * 2 - 1) * 10, color:'var(--primary)' });
+    // page-wide ambient rising bubbles (two parallax depths)
+    if (amb) [
+      { n:18, blur:true,  op:0.14, sMin:7, sMax:17, dMin:20, dMax:30, rate:0.02, spread:'full' },
+      { n:26, blur:false, op:0.24, sMin:6, sMax:13, dMin:14, dMax:22, rate:0.05, spread:'full' }
+    ].forEach(cfg => { const layer = document.createElement('div'); layer.style.cssText = 'position:fixed;left:0;right:0;bottom:0;top:0;will-change:transform'; amb.appendChild(layer); (this.ambLayers = this.ambLayers || []).push({ el:layer, rate:cfg.rate }); for (let i = 0; i < cfg.n; i++) this.spawnFoot(layer, cfg, true); });
+    // per-section bubble fields (hero, news, flavors...)
+    secs.forEach(sec => {
+      const n = parseInt(sec.getAttribute('data-seed-count') || '10', 10);
+      const cfg = { blur:false, op:0.34, sMin:6, sMax:16, dMin:9, dMax:15, spread:'full' };
+      const heavy = Math.max(7, Math.round(n * 0.45));
+      const layer = document.createElement('div'); layer.style.cssText = 'position:absolute;inset:0;will-change:transform'; sec.appendChild(layer);
+      for (let i = 0; i < n; i++) this.spawnFoot(layer, cfg, true);
+      const cfg2 = { blur:true, op:0.16, sMin:9, sMax:20, dMin:16, dMax:24, spread:'full' };
+      for (let i = 0; i < heavy; i++) this.spawnFoot(layer, cfg2, true);
+    });
     if (!foot) return;
     this.footLayers = [];
     [
-      { n:18, blur:true,  op:0.15, sMin:6, sMax:14, dMin:14, dMax:18, rate:0.015 },
-      { n:22, blur:false, op:0.30, sMin:5, sMax:12, dMin:8,  dMax:12, rate:0.035 },
-      { n:12, blur:false, op:0.40, sMin:8, sMax:16, dMin:5,  dMax:8,  rate:0.06 }
+      { n:20, blur:true,  op:0.16, sMin:6, sMax:14, dMin:14, dMax:18, rate:0.015 },
+      { n:26, blur:false, op:0.32, sMin:5, sMax:12, dMin:8,  dMax:12, rate:0.035 },
+      { n:14, blur:false, op:0.42, sMin:8, sMax:16, dMin:5,  dMax:8,  rate:0.06 }
     ].forEach(cfg => {
       const layer = document.createElement('div');
       layer.style.cssText = 'position:absolute;inset:0;will-change:transform';
@@ -678,6 +715,91 @@ class Component extends DCLogic {
     });
   }
 
+  setupCursorFizz(R){
+    this._fizzBar = document.querySelector('[data-scrollfizz]');
+    if (R) return;
+    const spot = document.querySelector('[data-spotlight]');
+    const glow = document.querySelector('[data-glow]');
+    const canvas = document.querySelector('[data-fizzcanvas]');
+    if (!canvas) return;
+    const fine = window.matchMedia && matchMedia('(hover:hover) and (pointer:fine)').matches;
+    if (fine && glow) document.documentElement.classList.add('glow-cursor');
+    const ctx = canvas.getContext('2d');
+    const DPR = Math.min(2, window.devicePixelRatio || 1);
+    const fit = () => { canvas.width = Math.floor(innerWidth * DPR); canvas.height = Math.floor(innerHeight * DPR); canvas.style.width = innerWidth + 'px'; canvas.style.height = innerHeight + 'px'; ctx.setTransform(DPR,0,0,DPR,0,0); };
+    fit(); this._onResizeFizz = fit; window.addEventListener('resize', fit);
+    const parts = this._fizzParts = [];
+    let mx = innerWidth / 2, my = innerHeight / 2, px = mx, py = my, moved = 0, spawnAcc = 0;
+    // soft glow bloom lags behind the pointer + a fizz trail; native cursor hidden on fine pointers
+    const hot = 'a,button,[data-magnetic],[data-canitem],[data-tile]';
+    this._cursorMove = (e) => {
+      mx = e.clientX; my = e.clientY; moved = 1;
+      if (glow) { glow.style.opacity = '1'; const big = e.target.closest && e.target.closest(hot); glow.style.width = big ? '68px' : '46px'; glow.style.height = big ? '68px' : '46px'; }
+      if (spot) { spot.style.opacity = '1'; spot.style.transform = 'translate(' + (mx - innerWidth / 2).toFixed(0) + 'px,' + (my - innerHeight / 2).toFixed(0) + 'px)'; }
+    };
+    window.addEventListener('mousemove', this._cursorMove, { passive:true });
+    this._cursorLeave = () => { if (spot) spot.style.opacity = '0'; if (glow) glow.style.opacity = '0'; };
+    document.addEventListener('mouseleave', this._cursorLeave);
+    // click = fizz burst + expanding ring
+    this._cursorClick = (e) => { const n = 14; for (let i = 0; i < n; i++) { const a = (Math.PI * 2 * i) / n + Math.random() * 0.5; const sp = 1.4 + Math.random() * 2.6; parts.push({ x:e.clientX, y:e.clientY, vx:Math.cos(a) * sp, vy:Math.sin(a) * sp - 1, r:2 + Math.random() * 3.5, life:1, blue:Math.random() < 0.25, burst:true }); }
+      const ring = document.createElement('div'); ring.setAttribute('data-cursor-ring',''); ring.style.cssText = 'position:fixed;left:' + e.clientX + 'px;top:' + e.clientY + 'px;z-index:9997;pointer-events:none;width:34px;height:34px;border-radius:9999px;border:2px solid color-mix(in srgb,var(--primary) 60%,transparent);transform:translate(-50%,-50%);animation:ringPop .55s ease-out forwards'; document.body.appendChild(ring); setTimeout(() => ring.remove(), 560);
+    };
+    window.addEventListener('mousedown', this._cursorClick, { passive:true });
+    const draw = () => {
+      ctx.clearRect(0, 0, innerWidth, innerHeight);
+      // trail emission from pointer speed
+      const dx = mx - px, dy = my - py, sp = Math.hypot(dx, dy); px += dx * 0.25; py += dy * 0.25;
+      if (glow) { glow.style.left = px.toFixed(1) + 'px'; glow.style.top = py.toFixed(1) + 'px'; }
+      if (moved) { spawnAcc += sp; while (spawnAcc > 26) { spawnAcc -= 26; parts.push({ x:mx + (Math.random() * 16 - 8), y:my + (Math.random() * 16 - 8), vx:(Math.random() * 2 - 1) * 0.5, vy:-0.5 - Math.random() * 1.1, r:1.6 + Math.random() * 3, life:1, blue:Math.random() < 0.2 }); } }
+      for (let i = parts.length - 1; i >= 0; i--) {
+        const p = parts[i];
+        p.x += p.vx; p.y += p.vy; p.vy += p.burst ? 0.06 : -0.012; p.vx *= 0.98; p.life -= p.burst ? 0.022 : 0.012;
+        if (p.life <= 0) { parts.splice(i, 1); continue; }
+        const rgb = p.blue ? '23,71,157' : '0,102,179';
+        const grd = ctx.createRadialGradient(p.x - p.r * 0.3, p.y - p.r * 0.3, 0, p.x, p.y, p.r);
+        grd.addColorStop(0, 'rgba(255,255,255,' + (0.9 * p.life) + ')');
+        grd.addColorStop(0.4, 'rgba(' + rgb + ',' + (0.55 * p.life) + ')');
+        grd.addColorStop(1, 'rgba(' + rgb + ',0)');
+        ctx.beginPath(); ctx.fillStyle = grd; ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill();
+      }
+      if (parts.length > 420) parts.splice(0, parts.length - 420);
+      this._fizzRaf = requestAnimationFrame(draw);
+    };
+    this._fizzRaf = requestAnimationFrame(draw);
+  }
+
+  setupCanTilt(R){
+    if (R) return;
+    this._tiltCans = Array.prototype.slice.call(document.querySelectorAll('[data-canitem]')).map(item => ({ item, wrap:item.querySelector('[data-canwrap]'), circle:item.firstElementChild }));
+    this._tiltCans.forEach(o => {
+      o.item.addEventListener('mousemove', (e) => {
+        const r = o.item.getBoundingClientRect();
+        const nx = (e.clientX - (r.left + r.width / 2)) / (r.width / 2);
+        const ny = (e.clientY - (r.top + r.height / 2)) / (r.height / 2);
+        if (o.circle) { o.circle.style.transition = 'transform .08s linear,box-shadow .3s ease'; o.circle.style.transform = 'perspective(520px) rotateY(' + (nx * 12).toFixed(1) + 'deg) rotateX(' + (-ny * 12).toFixed(1) + 'deg)'; }
+      });
+      o.item.addEventListener('mouseleave', () => { if (o.circle) { o.circle.style.transition = 'transform .5s var(--ease-spring),box-shadow .3s ease'; o.circle.style.transform = 'perspective(520px) rotateY(0) rotateX(0)'; } });
+    });
+  }
+
+  setupHeroParallax(R){
+    if (R) return;
+    const rows = Array.prototype.slice.call(document.querySelectorAll('[data-hero-skew]'));
+    if (!rows.length) return;
+    this._heroPx = 0; this._heroPy = 0; this._heroTx = 0; this._heroTy = 0;
+    const sec = rows[0].closest('section');
+    if (!sec) return;
+    this._heroMove = (e) => { const r = sec.getBoundingClientRect(); this._heroTx = ((e.clientX - (r.left + r.width / 2)) / r.width); this._heroTy = ((e.clientY - (r.top + r.height / 2)) / Math.max(1, r.height)); };
+    sec.addEventListener('mousemove', this._heroMove, { passive:true });
+    sec.addEventListener('mouseleave', () => { this._heroTx = 0; this._heroTy = 0; });
+    const tick = () => {
+      this._heroPx += (this._heroTx - this._heroPx) * 0.08; this._heroPy += (this._heroTy - this._heroPy) * 0.08;
+      rows.forEach((el, i) => { const depth = (i + 1) * 7; el.style.setProperty('--px', (this._heroPx * depth).toFixed(1) + 'px'); el.style.setProperty('--py', (this._heroPy * depth * 0.5).toFixed(1) + 'px'); });
+      this._heroPxRaf = requestAnimationFrame(tick);
+    };
+    this._heroPxRaf = requestAnimationFrame(tick);
+  }
+
   setupMagnetic(){
     Array.prototype.slice.call(document.querySelectorAll('[data-magnetic]')).forEach(el => {
       el.addEventListener('mousemove', (e) => {
@@ -716,7 +838,7 @@ class Component extends DCLogic {
       this.targetBoost = Math.min(1.6, 1 + Math.abs(this.vel) * 0.03);
       this.boost += (this.targetBoost - this.boost) * 0.12; this.applyMq();
       const sk = Math.max(-4, Math.min(4, this.vel * 0.22));
-      this.heroSkew.forEach(el => { el.style.transform = 'skewX(' + sk.toFixed(2) + 'deg)'; });
+      this.heroSkew.forEach(el => { const tx = el.style.getPropertyValue('--px') || '0px', ty = el.style.getPropertyValue('--py') || '0px'; el.style.transform = 'translate(' + tx + ',' + ty + ') skewX(' + sk.toFixed(2) + 'deg)'; });
       const vh = window.innerHeight;
       this.flrows.forEach(el => {
         const base = parseFloat(el.getAttribute('data-base') || '0'), dir = parseFloat(el.getAttribute('data-dir') || '1');
@@ -725,6 +847,7 @@ class Component extends DCLogic {
       });
       this.blobs.forEach(b => { const rate = parseFloat(b.getAttribute('data-rate') || '1'); b.style.translate = '0 ' + (-this.smoothY * 0.06 * rate).toFixed(1) + 'px'; });
       if (this.footLayers && this.footBox) { const ft = this.footBox.getBoundingClientRect().top - vh; this.footLayers.forEach(l => { l.el.style.translate = '0 ' + Math.max(-46, Math.min(46, ft * l.rate)).toFixed(1) + 'px'; }); }
+      if (this._fizzBar) { const mx = document.documentElement.scrollHeight - vh; const p = mx > 0 ? Math.max(0, Math.min(1, this.smoothY / mx)) : 0; this._fizzBar.style.transform = 'scaleX(' + p.toFixed(4) + ')'; }
       this._raf = requestAnimationFrame(step);
     };
     this._raf = requestAnimationFrame(step);
