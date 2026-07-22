@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Open+Sans:ital,wght@0,600;0,700;0,800;1,700;1,800&display=swap" rel="stylesheet">
+<style>
+@font-face{font-family:'Atenta';src:url('assets/fonts/Atenta-Medium.otf') format('opentype');font-weight:500;font-display:swap;}
+:root{
+ --background:#F2F2F2;--foreground:#1D2233;
+ --card:#FFFFFF;--card-foreground:#1D2233;
+ --popover:#FFFFFF;--popover-foreground:#1D2233;
+ --primary:#0066B3;--primary-foreground:#FFFFFF;
+ --secondary:#17479D;--secondary-foreground:#FFFFFF;
+ --muted:#E4E4E4;--muted-foreground:#557499;
+ --accent:#F5F8FB;--accent-foreground:#0066B3;
+ --destructive:#EC1C24;--destructive-foreground:#FFFFFF;
+ --border:#E4E4E4;--input:#C1C1C1;--ring:#0066B3;--radius:16px;
+ --chart-1:#DD6E0A;--chart-2:#00915D;--chart-3:#880033;--chart-4:#17479D;--chart-5:#EC1C24;
+ --font-heading:'Montserrat',system-ui,sans-serif;
+ --font-sans:'Open Sans',system-ui,sans-serif;
+ --ease-out-expo:cubic-bezier(0.16,1,0.3,1);
+ --ease-spring:cubic-bezier(0.34,1.56,0.64,1);
+}
+*{box-sizing:border-box;}
+body{margin:0;}
+img{display:block;max-width:100%;}
+a{color:var(--primary);text-decoration:none;}
+a:hover{color:var(--secondary);}
+@keyframes headFade{from{transform:translateY(-16px);opacity:0}to{transform:translateY(0);opacity:1}}
+@keyframes blobA{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(80px,50px) scale(1.15)}}
+@keyframes blobB{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-70px,70px) scale(1.1)}}
+@keyframes auroraDrift{0%{background-position:0% 50%,100% 50%,50% 0%}50%{background-position:100% 50%,0% 50%,50% 100%}100%{background-position:0% 50%,100% 50%,50% 0%}}
+@keyframes gridPan{from{background-position:0 0}to{background-position:64px 64px}}
+@keyframes ringPop{0%{transform:translate(-50%,-50%) scale(.2);opacity:.7}100%{transform:translate(-50%,-50%) scale(2.4);opacity:0}}
+@keyframes playPulse{0%,100%{box-shadow:0 0 0 0 color-mix(in srgb,var(--card) 40%,transparent)}50%{box-shadow:0 0 0 16px transparent}}
+@media (hover:none),(pointer:coarse){[data-cursor-ring],[data-glow]{display:none !important}}
+@media (max-width:1024px){
+ [data-pad]{padding-inline:24px !important;}
+ [data-rsp="foot"]{grid-template-columns:repeat(2,1fr) !important;gap:36px 28px !important;}
+}
+@media (max-width:920px){
+ [data-nav]{display:none !important;}
+ [data-burger]{display:grid !important;}
+}
+@media (max-width:700px){
+ [data-pad]{padding-inline:16px !important;}
+ [data-rsp="foot"]{grid-template-columns:1fr !important;gap:26px !important;}
+ [data-artimg]{aspect-ratio:4/3 !important;}
+ [data-metarow]{flex-wrap:wrap !important;gap:14px !important;}
+}
+@media (max-width:480px){
+ [data-hlogo]{height:34px !important;}
+}
+@media (prefers-reduced-motion: reduce){*{animation-duration:.001ms !important;animation-iteration-count:1 !important;animation-delay:0ms !important;transition-duration:.001ms !important;}}
+</style>
+<script src="_ds/matrix-d9cd55e2-8b81-4e7c-8034-e43a1b62f733/_ds_bundle.js"></script>
+</helmet>
+<div style="position:relative;color:var(--foreground);font-family:var(--font-sans);overflow-x:clip;min-height:100vh;background:var(--background)">
+
+  <div aria-hidden="true" style="position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(72% 58% at 12% 8%,color-mix(in srgb,var(--primary) 26%,transparent),transparent 60%),radial-gradient(58% 55% at 92% 22%,color-mix(in srgb,var(--secondary) 22%,transparent),transparent 62%),radial-gradient(60% 55% at 82% 82%,color-mix(in srgb,var(--chart-1) 14%,transparent),transparent 60%),radial-gradient(68% 62% at 40% 106%,color-mix(in srgb,var(--primary) 20%,transparent),transparent 60%);background-size:190% 190%,190% 190%,190% 190%,190% 190%;animation:auroraDrift 34s ease-in-out infinite;will-change:background-position"></div>
+
+  <div aria-hidden="true" style="position:absolute;inset:0;overflow:hidden;z-index:0;pointer-events:none">
+    <div data-blob data-rate="0.85" style="position:absolute;top:5%;left:-8%;width:580px;height:580px;border-radius:9999px;background:var(--primary);opacity:.18;filter:blur(88px);animation:blobA 60s ease-in-out infinite;will-change:transform"></div>
+    <div data-blob data-rate="1" style="position:absolute;top:44%;right:-10%;width:600px;height:600px;border-radius:9999px;background:var(--secondary);opacity:.15;filter:blur(90px);animation:blobB 60s ease-in-out infinite;will-change:transform"></div>
+    <div style="position:absolute;inset:0;background-image:linear-gradient(color-mix(in srgb,var(--primary) 6%,transparent) 1px,transparent 1px),linear-gradient(90deg,color-mix(in srgb,var(--primary) 6%,transparent) 1px,transparent 1px);background-size:64px 64px;-webkit-mask-image:radial-gradient(120% 90% at 50% 20%,#000,transparent 78%);mask-image:radial-gradient(120% 90% at 50% 20%,#000,transparent 78%);animation:gridPan 26s linear infinite;opacity:.5"></div>
+    <div data-bubbles style="position:absolute;inset:0;overflow:hidden"></div>
+    <div style="position:absolute;inset:0;opacity:.045;mix-blend-mode:multiply;background-image:url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22160%22 height=%22160%22><filter id=%22n%22><feTurbulence type=%22fractalNoise%22 baseFrequency=%220.85%22 numOctaves=%222%22 stitchTiles=%22stitch%22/></filter><rect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23n)%22/></svg>')"></div>
+  </div>
+
+  <div aria-hidden="true" data-spotlight style="position:fixed;inset:0;z-index:0;pointer-events:none;opacity:0;transition:opacity .6s ease;background:radial-gradient(320px 320px at 50% 50%,color-mix(in srgb,var(--primary) 20%,transparent),transparent 70%);mix-blend-mode:screen;will-change:transform"></div>
+  <canvas aria-hidden="true" data-fizzcanvas style="position:fixed;inset:0;z-index:52;pointer-events:none"></canvas>
+
+  <div style="position:relative;z-index:1">
+
+    <div aria-hidden="true" data-scrollfizz style="position:fixed;left:0;top:0;height:3px;width:100%;transform-origin:0 50%;transform:scaleX(0);z-index:90;background:linear-gradient(90deg,var(--primary),var(--secondary) 45%,var(--destructive));box-shadow:0 1px 8px color-mix(in srgb,var(--primary) 50%,transparent);pointer-events:none"></div>
+    <div aria-hidden="true" data-navdim style="position:fixed;inset:0;z-index:55;pointer-events:none;background:color-mix(in srgb,var(--foreground) 48%,transparent);opacity:0;transition:opacity .4s ease"></div>
+    <header onMouseEnter="{{ navEnter }}" onMouseLeave="{{ navLeave }}" style="position:sticky;top:0;z-index:60;padding:0 12px">
+      <div style="background:{{ headerBg }};-webkit-backdrop-filter:blur(20px) saturate(1.6);backdrop-filter:blur(20px) saturate(1.6);border-radius:0 0 18px 18px;overflow:hidden;box-shadow:{{ headerShadow }};transition:box-shadow .3s ease,background .3s ease">
+      <div data-pad style="max-width:1280px;margin:0 auto;padding-inline:32px;padding-block:{{ headerPadY }};min-height:64px;display:flex;align-items:center;justify-content:space-between;gap:24px;transition:padding-block .25s ease;animation:headFade .45s var(--ease-out-expo) both;animation-delay:.1s">
+        <div style="display:flex;align-items:center;gap:16px;flex:none">
+          <a href="index.html" style="display:flex;align-items:center;gap:5px;position:relative;overflow:hidden">
+            <img data-hlogo src="assets/logos/logo-primary-on-white.png" alt="Matrix Cola" style="height:46px;width:auto">
+          </a>
+          <button data-magnetic style="display:inline-flex;align-items:center;gap:6px;border:1.5px solid var(--input);background:transparent;border-radius:9999px;padding:7px 13px;cursor:pointer;color:var(--primary);font-family:var(--font-sans);font-weight:700;font-size:13px;transition:border-color .2s,color .2s" style-hover="border-color:var(--primary);color:var(--secondary)" style-focus="outline:2px solid var(--ring);outline-offset:2px">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3c2.6 2.6 2.6 15.4 0 18M12 3c-2.6 2.6-2.6 15.4 0 18"></path></svg>
+            AR
+          </button>
+        </div>
+        <nav data-nav style="display:flex;align-items:center;gap:30px;flex:none">
+          <sc-for list="{{ navItems }}" as="item" hint-placeholder-count="6">
+            <a href="{{ item.href }}" style="position:relative;font-family:var(--font-sans);font-weight:700;font-size:15px;color:{{ item.color }};padding:6px 2px 12px;background-image:linear-gradient(var(--primary),var(--primary));background-repeat:no-repeat;background-position:0 100%;background-size:0% 3px;border-radius:2px;transition:background-size .3s var(--ease-out-expo),color .2s" style-hover="color:var(--primary);background-size:100% 3px" style-focus="outline:2px solid var(--ring);outline-offset:3px">
+              {{ item.label }}
+              <sc-if value="{{ item.active }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;left:2px;right:2px;bottom:0;height:3px;background:var(--primary);border-radius:2px"></span></sc-if>
+            </a>
+          </sc-for>
+        </nav>
+        <button data-burger onClick="{{ toggleMenu }}" aria-label="Menu" style="display:none;flex:none;width:44px;height:44px;border-radius:12px;background:var(--primary);border:none;cursor:pointer;place-items:center;color:var(--primary-foreground);transition:background .2s" style-active="transform:scale(.94)" style-focus="outline:2px solid var(--ring);outline-offset:2px">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"></line><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="17" x2="20" y2="17"></line></svg>
+        </button>
+      </div>
+      </div>
+      <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute;left:12px;right:12px;top:calc(100% + 6px);z-index:70;background:var(--card);border-radius:16px;box-shadow:0 18px 40px color-mix(in srgb,var(--foreground) 20%,transparent);padding:10px;display:flex;flex-direction:column">
+          <sc-for list="{{ navItems }}" as="item" hint-placeholder-count="6">
+            <a href="{{ item.href }}" onClick="{{ closeMenu }}" style="padding:13px 14px;border-radius:10px;font-family:var(--font-sans);font-weight:700;font-size:15px;color:{{ item.color }}" style-active="background:var(--accent)">{{ item.label }}</a>
+          </sc-for>
+        </div>
+      </sc-if>
+    </header>
+
+    <article style="position:relative;padding:56px 0 70px">
+      <div data-secbubbles data-seed-count="10" style="position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden"></div>
+      <div data-pad style="max-width:1080px;margin:0 auto;padding-inline:32px;position:relative;z-index:1">
+
+        <div data-reveal>
+          <a href="news.html" style="display:inline-flex;align-items:center;gap:8px;font-family:var(--font-sans);font-weight:700;font-size:14px;color:var(--muted-foreground);margin-bottom:22px" style-hover="color:var(--primary)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+            All news
+          </a>
+          <div><span style="display:inline-block;background:var(--secondary);color:var(--secondary-foreground);font-family:var(--font-heading);font-weight:700;font-size:14px;padding:10px 24px;border-radius:9999px;box-shadow:0 10px 22px color-mix(in srgb,var(--secondary) 30%,transparent)">Press Release</span></div>
+          <h1 style="margin:26px 0 34px;font-family:var(--font-heading);font-weight:700;color:var(--primary);font-size:clamp(24px,3.6vw,40px);line-height:1.25;max-width:820px">Lorem ipsum dolor sit amet, consectetuer dolor sit, adipiscing elit,</h1>
+        </div>
+
+        <div data-reveal data-reveal-delay="100" data-imgclip data-clip="inset(0 round 24px)" data-artimg style="position:relative;border-radius:24px;overflow:hidden;aspect-ratio:1040/500;box-shadow:0 26px 54px color-mix(in srgb,var(--foreground) 16%,transparent)">
+          <img src="assets/news/fruit-splash.jpg" alt="Matrix Fruit Cola visual identity" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">
+          <button aria-label="Play video" style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:76px;height:76px;border-radius:9999px;border:none;cursor:pointer;background:color-mix(in srgb,var(--foreground) 72%,transparent);display:grid;place-items:center;color:var(--card);animation:playPulse 2.6s ease-out infinite;transition:transform .3s var(--ease-spring),background .25s ease" style-hover="transform:translate(-50%,-50%) scale(1.12);background:var(--foreground)" style-active="transform:translate(-50%,-50%) scale(.95)" style-focus="outline:2px solid var(--card);outline-offset:3px">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" style="margin-left:4px"><path d="M7 4.5v15l13-7.5z"></path></svg>
+          </button>
+        </div>
+
+        <div data-reveal data-reveal-delay="160" style="border-top:1px solid var(--input);border-bottom:1px solid var(--input);margin:30px 0 40px;padding:18px 4px">
+          <div data-metarow style="display:flex;align-items:center;justify-content:flex-end;gap:22px">
+            <span style="font-family:var(--font-heading);font-weight:700;font-size:15px;color:var(--card-foreground);margin-right:auto">20 July 2026</span>
+            <button data-magnetic onClick="{{ onShare }}" style="display:inline-flex;align-items:center;gap:10px;border:none;background:var(--secondary);color:var(--secondary-foreground);border-radius:9999px;padding:12px 26px;cursor:pointer;font-family:var(--font-heading);font-weight:700;font-size:15px;box-shadow:0 10px 22px color-mix(in srgb,var(--secondary) 30%,transparent);transition:background .25s ease" style-hover="background:var(--primary)" style-active="transform:scale(.96)" style-focus="outline:2px solid var(--ring);outline-offset:2px">
+              {{ shareLabel }}
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.6" y1="10.5" x2="15.4" y2="6.5"></line><line x1="8.6" y1="13.5" x2="15.4" y2="17.5"></line></svg>
+            </button>
+            <button data-magnetic onClick="{{ onCopy }}" aria-label="Copy link" style="flex:none;width:46px;height:46px;border-radius:9999px;border:1.5px solid var(--secondary);background:transparent;color:var(--secondary);cursor:pointer;display:grid;place-items:center;transition:background .25s ease,color .2s" style-hover="background:var(--secondary);color:var(--secondary-foreground)" style-active="transform:scale(.94)" style-focus="outline:2px solid var(--ring);outline-offset:2px">
+              <sc-if value="{{ copied }}" hint-placeholder-val="{{ false }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg></sc-if>
+              <sc-if value="{{ notCopied }}" hint-placeholder-val="{{ true }}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></sc-if>
+            </button>
+          </div>
+        </div>
+
+        <div data-reveal data-reveal-delay="60" style="max-width:900px;font-family:var(--font-sans);font-weight:600;font-size:17px;line-height:1.75;color:color-mix(in srgb,var(--foreground) 88%,transparent)">
+          <p style="margin:0 0 26px">20 July 2026: Today, Matrix Cola proudly unveils its new global visual identity system, introducing a bold, modern, and scalable brand look designed to strengthen recognition across every consumer touchpoint.</p>
+          <p style="margin:0 0 26px">Built around the strategic vision of making every Matrix Cola experience instantly recognizable, the refreshed identity marks a new chapter in the brand&rsquo;s evolution, reinforcing consistency while enhancing its presence across regional and international markets.</p>
+          <p style="margin:0 0 26px">The new visual system highlights Matrix Cola&rsquo;s signature brand assets, including its vibrant color palette, dynamic graphic elements, bold typography, and iconic &ldquo;X&rdquo; design that defines the brand across cans, bottles, retail environments, marketing materials, and digital platforms.</p>
+          <p style="margin:0 0 26px">&ldquo;Matrix Cola continues to evolve with the needs of today&rsquo;s consumers while staying true to the brand they know and trust,&rdquo; said [CEO / Marketing Director Name], Matrix Cola. &ldquo;This visual refresh strengthens our identity, creates a more consistent brand experience, and builds a stronger foundation for future growth across every market we serve.&rdquo;</p>
+          <p style="margin:0 0 26px">As part of the refresh, the Matrix Cola Zero Sugar range also receives an updated design featuring a more distinctive visual language, including larger &ldquo;Zero Sugar&rdquo; typography, bold black graphic accents, and premium packaging details that clearly differentiate it while maintaining a strong connection to the Matrix Cola master brand.</p>
+          <p style="margin:0">The refreshed identity will gradually roll out across Jordan, the Middle East, and key international markets, creating a unified and impactful brand experience for consumers wherever they encounter Matrix Cola.</p>
+        </div>
+
+      </div>
+    </article>
+
+    <footer style="position:relative;overflow:hidden;padding:56px 0 60px"><div data-footerbubbles style="position:absolute;inset:0;z-index:0;pointer-events:none"></div><div style="position:relative;z-index:1">
+      <div style="height:1px;background:var(--border);margin-bottom:40px"></div>
+      <div data-pad style="max-width:1180px;margin:0 auto;padding-inline:32px">
+        <div data-rsp="foot" data-reveal style="display:grid;grid-template-columns:repeat(4,1fr);gap:28px">
+          <sc-for list="{{ footerCols }}" as="col" hint-placeholder-count="3">
+            <div>
+              <h4 style="font-family:var(--font-sans);font-weight:700;font-size:15px;color:var(--muted-foreground);margin:0 0 26px">{{ col.h }}</h4>
+              <div style="display:flex;flex-direction:column;gap:14px">
+                <sc-for list="{{ col.links }}" as="link" hint-placeholder-count="4">
+                  <a href="{{ link.href }}" style="font-family:var(--font-sans);font-weight:700;font-size:14px;color:var(--primary)" style-hover="color:var(--secondary)">{{ link.label }}</a>
+                </sc-for>
+              </div>
+            </div>
+          </sc-for>
+          <div>
+            <h4 style="font-family:var(--font-sans);font-weight:700;font-size:15px;color:var(--muted-foreground);margin:0 0 26px">Follow us</h4>
+            <div style="display:flex;gap:12px">
+              <a href="#" aria-label="Facebook" style="width:38px;height:38px;border-radius:9px;background:var(--primary);display:grid;place-items:center;color:var(--primary-foreground);transition:background .2s,transform .3s var(--ease-spring)" style-hover="background:var(--secondary);transform:translateY(-3px)"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-7h2.3l.4-2.7h-2.7V9.5c0-.8.2-1.3 1.4-1.3H16.3V5.8c-.3 0-1.2-.1-2.2-.1-2.1 0-3.6 1.3-3.6 3.6v2H8.1V14h2.4v7z"></path></svg></a>
+              <a href="#" aria-label="LinkedIn" style="width:38px;height:38px;border-radius:9px;background:var(--primary);display:grid;place-items:center;color:var(--primary-foreground);transition:background .2s,transform .3s var(--ease-spring)" style-hover="background:var(--secondary);transform:translateY(-3px)"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M6.94 8.9V19H4V8.9zM5.47 4.2a1.7 1.7 0 100 3.4 1.7 1.7 0 000-3.4zM20 19h-2.94v-5.3c0-1.3-.47-2.2-1.63-2.2-.9 0-1.4.6-1.64 1.18-.09.2-.11.5-.11.8V19H9.74s.04-9 0-9.9h2.94v1.4c.39-.6 1.09-1.46 2.66-1.46 1.94 0 3.66 1.27 3.66 4z"></path></svg></a>
+              <a href="#" aria-label="Instagram" style="width:38px;height:38px;border-radius:9px;background:var(--primary);display:grid;place-items:center;color:var(--primary-foreground);transition:background .2s,transform .3s var(--ease-spring)" style-hover="background:var(--secondary);transform:translateY(-3px)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="5"></rect><circle cx="12" cy="12" r="3.6"></circle><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"></circle></svg></a>
+              <a href="#" aria-label="YouTube" style="width:38px;height:38px;border-radius:9px;background:var(--primary);display:grid;place-items:center;color:var(--primary-foreground);transition:background .2s,transform .3s var(--ease-spring)" style-hover="background:var(--secondary);transform:translateY(-3px)"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M21.6 8.2a2.4 2.4 0 00-1.7-1.7C18.4 6 12 6 12 6s-6.4 0-7.9.5A2.4 2.4 0 002.4 8.2 25 25 0 002 12a25 25 0 00.4 3.8 2.4 2.4 0 001.7 1.7C5.6 18 12 18 12 18s6.4 0 7.9-.5a2.4 2.4 0 001.7-1.7A25 25 0 0022 12a25 25 0 00-.4-3.8zM10 15V9l5.2 3z"></path></svg></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="height:1px;background:var(--border);margin-top:44px"></div>
+      </div>
+    </footer>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  state = { scrolled:false, menuOpen:false, copied:false, shared:false };
+
+  componentDidMount(){
+    const R = this.R = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+    this._alive = true; this._shown = new Set();
+    this.setupReveals(R);
+    this.setupBubbles(R);
+    this.setupCursorFizz(R);
+    this._sweep = () => {
+      if (this._pending) this._pending.forEach(el => { if (el.getBoundingClientRect().bottom < 60) this._instantShow(el); });
+    };
+    this.blobs = Array.prototype.slice.call(document.querySelectorAll('[data-blob]'));
+    this._onScroll = () => {
+      const s = window.scrollY > 80; if (s !== this.state.scrolled) this.setState({ scrolled:s });
+      if (this._sweep) this._sweep();
+    };
+    window.addEventListener('scroll', this._onScroll, { passive:true });
+    if (!R) { this.setupMagnetic(); this.loop(); }
+  }
+
+  componentWillUnmount(){
+    this._alive = false;
+    window.removeEventListener('scroll', this._onScroll);
+    if (this._io) this._io.disconnect();
+    if (this._raf) cancelAnimationFrame(this._raf);
+    if (this._fizzRaf) cancelAnimationFrame(this._fizzRaf);
+    if (this._cursorMove) window.removeEventListener('mousemove', this._cursorMove);
+    if (this._cursorClick) window.removeEventListener('mousedown', this._cursorClick);
+    if (this._cursorLeave) document.removeEventListener('mouseleave', this._cursorLeave);
+    if (this._onResizeFizz) window.removeEventListener('resize', this._onResizeFizz);
+    if (this._copyT) clearTimeout(this._copyT);
+    if (this._shareT) clearTimeout(this._shareT);
+  }
+
+  componentDidUpdate(){
+    if (!this._shown) return;
+    this._shown.forEach(el => {
+      if (el.style.opacity === '0') el.style.removeProperty('opacity');
+      if ((el.style.clipPath || '').indexOf('100%') !== -1) el.style.removeProperty('clip-path');
+    });
+  }
+
+  revealClips(el){
+    const list = el.hasAttribute('data-imgclip') ? [el] : [];
+    return list.concat(Array.prototype.slice.call(el.querySelectorAll('[data-imgclip]')));
+  }
+
+  setupReveals(R){
+    const targets = Array.prototype.slice.call(document.querySelectorAll('[data-reveal]'));
+    const done = (el) => {
+      el.style.removeProperty('opacity'); el.style.removeProperty('transform');
+      if (el._t0) el.style.transition = el._t0; else el.style.removeProperty('transition');
+      this.revealClips(el).forEach(c => {
+        c.style.removeProperty('clip-path');
+        if (c !== el) { if (c._t0) c.style.transition = c._t0; else c.style.removeProperty('transition'); }
+      });
+      this._shown.add(el);
+    };
+    if (R || !('IntersectionObserver' in window)) { targets.forEach(el => this._shown.add(el)); return; }
+    targets.forEach(el => {
+      el._t0 = el.style.transition;
+      el.style.transition = 'none'; el.style.opacity = '0';
+      el.style.transform = el.getAttribute('data-enter') || 'translateY(26px)';
+      this.revealClips(el).forEach(c => {
+        const round = (c.getAttribute('data-clip') || '').match(/round [^)]+/);
+        if (c !== el) c._t0 = c.style.transition;
+        c.style.transition = 'none';
+        c.style.clipPath = 'inset(100% 0 0 0 ' + (round ? round[0] : '') + ')';
+      });
+    });
+    void document.documentElement.offsetHeight;
+    const show = (el) => {
+      el.style.transition = 'opacity .7s var(--ease-out-expo),transform .8s var(--ease-spring)';
+      this.revealClips(el).forEach(c => { if (c !== el) c.style.transition = 'transform .4s var(--ease-spring),box-shadow .4s ease,clip-path .75s var(--ease-out-expo)'; else c.style.transition += ',clip-path .75s var(--ease-out-expo)'; });
+      void el.offsetHeight;
+      el.style.opacity = '1'; el.style.transform = 'none';
+      this.revealClips(el).forEach(c => { c.style.clipPath = c.getAttribute('data-clip') || 'inset(0)'; });
+      setTimeout(() => done(el), 1000);
+    };
+    this._pending = new Set(targets);
+    const watchMap = new Map();
+    targets.forEach(el => {
+      const w = el.hasAttribute('data-imgclip') ? (el.parentElement || el) : el;
+      if (!watchMap.has(w)) watchMap.set(w, []);
+      watchMap.get(w).push(el);
+    });
+    this._instantShow = (el) => { this._pending.delete(el); done(el); };
+    this._io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        this._io.unobserve(e.target);
+        (watchMap.get(e.target) || []).forEach(el => {
+          if (!this._pending.has(el)) return;
+          this._pending.delete(el);
+          setTimeout(() => show(el), parseInt(el.getAttribute('data-reveal-delay') || '0', 10));
+        });
+      });
+    }, { threshold:0.15, rootMargin:'0px 0px -8% 0px' });
+    watchMap.forEach((els, w) => this._io.observe(w));
+  }
+
+  glossBubble(o){
+    const b = document.createElement('span');
+    const tint = o.blue ? 'var(--secondary)' : 'var(--primary)';
+    b.style.cssText = 'position:absolute;width:' + o.s + 'px;height:' + o.s + 'px;border-radius:9999px;opacity:0;pointer-events:none;will-change:transform,opacity;box-shadow:inset 0 0 0 1px rgba(255,255,255,.3);'
+      + 'background:radial-gradient(circle at 30% 30%,rgba(255,255,255,.95) 0%,rgba(255,255,255,.4) 16%,color-mix(in srgb,' + tint + ' 40%,transparent) 50%,color-mix(in srgb,' + tint + ' 10%,transparent) 100%);'
+      + (o.blur ? 'filter:blur(2px);' : '');
+    return b;
+  }
+  spawnFoot(layer, cfg, seed){
+    const b = this.glossBubble({ s:Math.round(cfg.sMin + Math.random() * (cfg.sMax - cfg.sMin)), blue:Math.random() < 0.18, blur:cfg.blur });
+    b.style.left = (Math.random() * 100).toFixed(1) + '%'; b.style.bottom = '-18px';
+    layer.appendChild(b);
+    const H = layer.clientHeight || 340;
+    const rise = H * (0.55 + Math.random() * 0.5);
+    const dur = (cfg.dMin + Math.random() * (cfg.dMax - cfg.dMin)) * 1000;
+    const w = (Math.random() < 0.5 ? -1 : 1) * (6 + Math.random() * 4);
+    const a = b.animate([
+      { transform:'translate(0,0) scale(.9)', opacity:0 },
+      { opacity:cfg.op, offset:0.12 },
+      { transform:'translate(' + w.toFixed(1) + 'px,-' + (rise * 0.33).toFixed(0) + 'px) scale(.97)', offset:0.33 },
+      { transform:'translate(' + (-w).toFixed(1) + 'px,-' + (rise * 0.66).toFixed(0) + 'px) scale(1.04)', opacity:cfg.op, offset:0.66 },
+      { transform:'translate(' + (w * 0.6).toFixed(1) + 'px,-' + rise.toFixed(0) + 'px) scale(1.15)', opacity:0 }
+    ], { duration:dur, delay: seed ? -Math.random() * dur * 0.9 : Math.random() * 400, easing:'linear' });
+    a.onfinish = () => { b.remove(); if (this._alive) this.spawnFoot(layer, cfg, false); };
+  }
+  setupBubbles(R){
+    const amb = document.querySelector('[data-bubbles]');
+    const foot = this.footBox = document.querySelector('[data-footerbubbles]');
+    const secs = Array.prototype.slice.call(document.querySelectorAll('[data-secbubbles]'));
+    if (R) {
+      if (amb) for (let i = 0; i < 18; i++) { const b = this.glossBubble({ s:Math.round(5 + Math.random() * 11), blue:i % 4 === 0, blur:i % 3 === 0 }); b.style.left = (Math.random() * 100).toFixed(1) + '%'; b.style.bottom = (Math.random() * 96).toFixed(0) + '%'; b.style.opacity = '.14'; amb.appendChild(b); }
+      return;
+    }
+    if (amb) [
+      { n:16, blur:true,  op:0.14, sMin:7, sMax:17, dMin:20, dMax:30 },
+      { n:22, blur:false, op:0.24, sMin:6, sMax:13, dMin:14, dMax:22 }
+    ].forEach(cfg => { const layer = document.createElement('div'); layer.style.cssText = 'position:fixed;left:0;right:0;bottom:0;top:0;will-change:transform'; amb.appendChild(layer); for (let i = 0; i < cfg.n; i++) this.spawnFoot(layer, cfg, true); });
+    secs.forEach(sec => {
+      const n = parseInt(sec.getAttribute('data-seed-count') || '10', 10);
+      const cfg = { blur:false, op:0.32, sMin:6, sMax:16, dMin:9, dMax:15 };
+      const layer = document.createElement('div'); layer.style.cssText = 'position:absolute;inset:0;will-change:transform'; sec.appendChild(layer);
+      for (let i = 0; i < n; i++) this.spawnFoot(layer, cfg, true);
+    });
+    if (!foot) return;
+    [
+      { n:18, blur:true,  op:0.16, sMin:6, sMax:14, dMin:14, dMax:18 },
+      { n:22, blur:false, op:0.32, sMin:5, sMax:12, dMin:8,  dMax:12 }
+    ].forEach(cfg => {
+      const layer = document.createElement('div');
+      layer.style.cssText = 'position:absolute;inset:0;will-change:transform';
+      foot.appendChild(layer);
+      for (let i = 0; i < cfg.n; i++) this.spawnFoot(layer, cfg, true);
+    });
+  }
+
+  setupCursorFizz(R){
+    this._fizzBar = document.querySelector('[data-scrollfizz]');
+    if (R) return;
+    const spot = document.querySelector('[data-spotlight]');
+    const canvas = document.querySelector('[data-fizzcanvas]');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const DPR = Math.min(2, window.devicePixelRatio || 1);
+    const fit = () => { canvas.width = Math.floor(innerWidth * DPR); canvas.height = Math.floor(innerHeight * DPR); canvas.style.width = innerWidth + 'px'; canvas.style.height = innerHeight + 'px'; ctx.setTransform(DPR,0,0,DPR,0,0); };
+    fit(); this._onResizeFizz = fit; window.addEventListener('resize', fit);
+    const parts = [];
+    let mx = innerWidth / 2, my = innerHeight / 2, px = mx, py = my, moved = 0, spawnAcc = 0;
+    this._cursorMove = (e) => {
+      mx = e.clientX; my = e.clientY; moved = 1;
+      if (spot) { spot.style.opacity = '1'; spot.style.transform = 'translate(' + (mx - innerWidth / 2).toFixed(0) + 'px,' + (my - innerHeight / 2).toFixed(0) + 'px)'; }
+    };
+    window.addEventListener('mousemove', this._cursorMove, { passive:true });
+    this._cursorLeave = () => { if (spot) spot.style.opacity = '0'; };
+    document.addEventListener('mouseleave', this._cursorLeave);
+    this._cursorClick = (e) => { const n = 14; for (let i = 0; i < n; i++) { const a = (Math.PI * 2 * i) / n + Math.random() * 0.5; const sp = 1.4 + Math.random() * 2.6; parts.push({ x:e.clientX, y:e.clientY, vx:Math.cos(a) * sp, vy:Math.sin(a) * sp - 1, r:2 + Math.random() * 3.5, life:1, blue:Math.random() < 0.25, burst:true }); }
+      const ring = document.createElement('div'); ring.setAttribute('data-cursor-ring',''); ring.style.cssText = 'position:fixed;left:' + e.clientX + 'px;top:' + e.clientY + 'px;z-index:9997;pointer-events:none;width:34px;height:34px;border-radius:9999px;border:2px solid color-mix(in srgb,var(--primary) 60%,transparent);transform:translate(-50%,-50%);animation:ringPop .55s ease-out forwards'; document.body.appendChild(ring); setTimeout(() => ring.remove(), 560);
+    };
+    window.addEventListener('mousedown', this._cursorClick, { passive:true });
+    const draw = () => {
+      ctx.clearRect(0, 0, innerWidth, innerHeight);
+      const dx = mx - px, dy = my - py, sp = Math.hypot(dx, dy); px += dx * 0.25; py += dy * 0.25;
+      if (moved) { spawnAcc += sp; while (spawnAcc > 26) { spawnAcc -= 26; parts.push({ x:mx + (Math.random() * 16 - 8), y:my + (Math.random() * 16 - 8), vx:(Math.random() * 2 - 1) * 0.5, vy:-0.5 - Math.random() * 1.1, r:1.6 + Math.random() * 3, life:1, blue:Math.random() < 0.2 }); } }
+      for (let i = parts.length - 1; i >= 0; i--) {
+        const p = parts[i];
+        p.x += p.vx; p.y += p.vy; p.vy += p.burst ? 0.06 : -0.012; p.vx *= 0.98; p.life -= p.burst ? 0.022 : 0.012;
+        if (p.life <= 0) { parts.splice(i, 1); continue; }
+        const rgb = p.blue ? '23,71,157' : '0,102,179';
+        const grd = ctx.createRadialGradient(p.x - p.r * 0.3, p.y - p.r * 0.3, 0, p.x, p.y, p.r);
+        grd.addColorStop(0, 'rgba(255,255,255,' + (0.9 * p.life) + ')');
+        grd.addColorStop(0.4, 'rgba(' + rgb + ',' + (0.55 * p.life) + ')');
+        grd.addColorStop(1, 'rgba(' + rgb + ',0)');
+        ctx.beginPath(); ctx.fillStyle = grd; ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fill();
+      }
+      if (parts.length > 420) parts.splice(0, parts.length - 420);
+      this._fizzRaf = requestAnimationFrame(draw);
+    };
+    this._fizzRaf = requestAnimationFrame(draw);
+  }
+
+  setupMagnetic(){
+    Array.prototype.slice.call(document.querySelectorAll('[data-magnetic]')).forEach(el => {
+      el.addEventListener('mousemove', (e) => {
+        const r = el.getBoundingClientRect();
+        const dx = e.clientX - (r.left + r.width / 2), dy = e.clientY - (r.top + r.height / 2);
+        el.style.transition = 'transform .1s linear';
+        el.style.transform = 'translate(' + (dx * 0.25).toFixed(1) + 'px,' + (dy * 0.3).toFixed(1) + 'px)';
+      });
+      el.addEventListener('mouseleave', () => { el.style.transition = 'transform .5s var(--ease-spring)'; el.style.transform = 'translate(0,0)'; });
+    });
+  }
+
+  _updateFizzBar(){ if (!this._fizzBar) return; const vh = window.innerHeight; const mx = document.documentElement.scrollHeight - vh; const p = mx > 0 ? Math.max(0, Math.min(1, window.scrollY / mx)) : 0; this._fizzBar.style.transform = 'scaleX(' + p.toFixed(4) + ')'; }
+
+  loop(){
+    const step = () => {
+      const y = window.scrollY;
+      this.blobs.forEach(b => { const rate = parseFloat(b.getAttribute('data-rate') || '1'); b.style.translate = '0 ' + (-y * 0.06 * rate).toFixed(1) + 'px'; });
+      this._updateFizzBar();
+      this._raf = requestAnimationFrame(step);
+    };
+    this._raf = requestAnimationFrame(step);
+  }
+
+  renderVals(){
+    const S = this.state;
+    const navItems = [
+      { label:'Company', href:'index.html' },
+      { label:'Products', href:'products.html' },
+      { label:'Careers', href:'#' },
+      { label:'Maps', href:'#' },
+      { label:'Blogs', href:'news.html', active:true },
+      { label:'Contact us', href:'contact.html' },
+    ].map(it => ({ label:it.label, href:it.href, active:!!it.active, color:it.active ? 'var(--primary)' : 'var(--foreground)' }));
+
+    const footerCols = [
+      { h:'ABOUT US', links:[{label:'Our Company',href:'index.html'},{label:'Our Brands',href:'products.html'},{label:'Investors',href:'#'},{label:'Policies, Practices & Reports',href:'#'},{label:'Careers',href:'#'}] },
+      { h:'Need Help?', links:[{label:'FAQ',href:'#'},{label:'Contact Us',href:'contact.html'},{label:'International',href:'#'}] },
+      { h:'Useful links', links:[{label:'Privacy Policy',href:'#'},{label:'Cookies Policy',href:'#'},{label:'Cookies Settings',href:'#'},{label:'Notice at Collection',href:'#'},{label:'Do Not Sell or Share My Personal Information',href:'#'},{label:'Terms of Service',href:'#'}] },
+    ];
+
+    const copyLink = () => {
+      const url = location.href;
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url);
+      this.setState({ copied:true });
+      this._copyT = setTimeout(() => { if (this._alive) this.setState({ copied:false }); }, 2000);
+    };
+
+    return {
+      headerShadow: S.scrolled ? '0 10px 30px color-mix(in srgb,var(--foreground) 14%,transparent), inset 0 -1px 0 color-mix(in srgb,var(--card) 70%,transparent)' : '0 1px 0 var(--border)',
+      headerBg: S.scrolled ? 'color-mix(in srgb,var(--card) 52%,transparent)' : 'var(--card)',
+      headerPadY: S.scrolled ? '12px' : '16px',
+      navEnter: () => { const d = document.querySelector('[data-navdim]'); if (d) d.style.opacity = '1'; },
+      navLeave: () => { const d = document.querySelector('[data-navdim]'); if (d) d.style.opacity = '0'; },
+      menuOpen: S.menuOpen,
+      toggleMenu: () => this.setState(st => ({ menuOpen: !st.menuOpen })),
+      closeMenu: () => this.setState({ menuOpen:false }),
+      navItems, footerCols,
+      copied: S.copied, notCopied: !S.copied,
+      shareLabel: S.shared ? 'Link Copied!' : 'Share',
+      onShare: () => {
+        if (navigator.share) { navigator.share({ title: document.title || 'Matrix Cola News', url: location.href }).catch(() => {}); return; }
+        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(location.href);
+        this.setState({ shared:true });
+        this._shareT = setTimeout(() => { if (this._alive) this.setState({ shared:false }); }, 2000);
+      },
+      onCopy: copyLink,
+    };
+  }
+}
+</script>
+</body>
+</html>

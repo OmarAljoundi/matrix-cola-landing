@@ -200,7 +200,7 @@ a:hover{color:var(--secondary);}
           </sc-for>
         </div>
         <div data-reveal data-reveal-delay="240" style="display:flex;justify-content:center;margin-top:44px">
-          <button data-magnetic style="background:var(--primary);color:var(--primary-foreground);border:none;border-radius:9999px;padding:15px 36px;font-family:var(--font-sans);font-weight:700;font-size:16px;cursor:pointer;transition:background .25s var(--ease-spring),box-shadow .25s ease;box-shadow:0 12px 26px color-mix(in srgb,var(--primary) 30%,transparent)" style-hover="background:color-mix(in srgb,var(--primary) 88%,var(--foreground));box-shadow:0 16px 32px color-mix(in srgb,var(--primary) 40%,transparent)" style-active="transform:scale(.96)" style-focus="outline:2px solid var(--ring);outline-offset:2px">See All News</button>
+          <a href="news.html" data-magnetic style="display:inline-block;background:var(--primary);color:var(--primary-foreground);border:none;border-radius:9999px;padding:15px 36px;font-family:var(--font-sans);font-weight:700;font-size:16px;cursor:pointer;transition:background .25s var(--ease-spring),box-shadow .25s ease;box-shadow:0 12px 26px color-mix(in srgb,var(--primary) 30%,transparent)" style-hover="background:color-mix(in srgb,var(--primary) 88%,var(--foreground));color:var(--primary-foreground);box-shadow:0 16px 32px color-mix(in srgb,var(--primary) 40%,transparent)" style-active="transform:scale(.96)" style-focus="outline:2px solid var(--ring);outline-offset:2px">See All News</a>
         </div>
       </div>
     </section>
@@ -814,9 +814,10 @@ class Component extends DCLogic {
     const P = (n) => 'assets/social/post-' + String(n).padStart(2,'0') + '.jpg';
     const CAN = (n) => 'assets/cans/can-0' + n + '-transparent.png';
 
+    const NAV_HREFS = { 'Products':'products.html', 'Blogs':'news.html', 'Contact us':'contact.html' };
     const navItems = ['Company','Products','Careers','Maps','Blogs','Contact us'].map(label => ({
       label, active: label === 'Company', color: label === 'Company' ? 'var(--primary)' : 'var(--foreground)',
-      href: label === 'Products' ? 'products.html' : '#',
+      href: NAV_HREFS[label] || '#',
     }));
     const heroMk = (arr) => { const a = arr.map(n => ({ src:P(n) })); return a.concat(arr.map(n => ({ src:P(n) }))); };
 

@@ -3,9 +3,18 @@ uploads/
 .DS_Store
 _ds/**/.DS_Store
 Matrix Cola Landing.dc.html
-# heavy designer source art (already rasterized into assets/decor/)
+# heavy designer source art (already rasterized into assets/)
 Asset 1.svg
 Asset 2.svg
 Asset 3.svg
+Asset 4.svg
+Matrix site.svg
+Matrix site2.svg
+Matrix site3.svg
+ChatGPT Image*.png
+Screenshot*.png
+Screenshot*.jpg
+Screenshot-*.jpg
+factory.jpg
 wetransfer_*.zip
 *.zip

@@ -26,67 +26,40 @@
  --chart-1:#DD6E0A;--chart-2:#00915D;--chart-3:#880033;--chart-4:#17479D;--chart-5:#EC1C24;
  --font-heading:'Montserrat',system-ui,sans-serif;
  --font-sans:'Open Sans',system-ui,sans-serif;
- --font-atenta:'Atenta','Open Sans',sans-serif;
  --ease-out-expo:cubic-bezier(0.16,1,0.3,1);
- --ease-in-quart:cubic-bezier(0.5,0,0.75,0);
  --ease-spring:cubic-bezier(0.34,1.56,0.64,1);
- --ease-spring-can:cubic-bezier(0.34,1.8,0.5,1);
 }
 *{box-sizing:border-box;}
 body{margin:0;}
 img{display:block;max-width:100%;}
 a{color:var(--primary);text-decoration:none;}
 a:hover{color:var(--secondary);}
-@keyframes riseWord{from{transform:translateY(115%) rotate(4deg)}to{transform:translateY(0) rotate(0)}}
-@keyframes echoSnap{0%{transform:translate(0,0)}80%{transform:translate(3.6px,3.6px)}100%{transform:translate(3px,3px)}}
 @keyframes headFade{from{transform:translateY(-16px);opacity:0}to{transform:translateY(0);opacity:1}}
-@keyframes logoSweep{from{transform:translateX(-130%) skewX(-18deg)}to{transform:translateX(240%) skewX(-18deg)}}
 @keyframes blobA{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(80px,50px) scale(1.15)}}
 @keyframes blobB{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-70px,70px) scale(1.1)}}
 @keyframes blobC{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(60px,-60px) scale(1.2)}}
-@keyframes blobD{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-90px,-40px) scale(1.18)}}
 @keyframes auroraDrift{0%{background-position:0% 50%,100% 50%,50% 0%}50%{background-position:100% 50%,0% 50%,50% 100%}100%{background-position:0% 50%,100% 50%,50% 0%}}
 @keyframes gridPan{from{background-position:0 0}to{background-position:64px 64px}}
 @keyframes ringPop{0%{transform:translate(-50%,-50%) scale(.2);opacity:.7}100%{transform:translate(-50%,-50%) scale(2.4);opacity:0}}
-@keyframes iceFloat{0%,100%{transform:translateY(0) rotate(var(--r,0deg))}50%{transform:translateY(-18px) rotate(calc(var(--r,0deg) + 3deg))}}
+@keyframes bottleFloat{0%,100%{transform:rotate(var(--r,0deg)) translateY(0)}50%{transform:rotate(calc(var(--r,0deg) + 2deg)) translateY(-14px)}}
 @media (hover:none),(pointer:coarse){[data-cursor-ring],[data-glow]{display:none !important}}
-@media (hover:hover) and (pointer:fine){html.glow-cursor,html.glow-cursor a,html.glow-cursor button,html.glow-cursor [data-magnetic]{cursor:none !important}}
 @media (max-width:1024px){
  [data-pad]{padding-inline:24px !important;}
  [data-rsp="foot"]{grid-template-columns:repeat(2,1fr) !important;gap:36px 28px !important;}
- [data-prow]{gap:44px !important;}
 }
 @media (max-width:920px){
  [data-nav]{display:none !important;}
  [data-burger]{display:grid !important;}
 }
-[data-prow] [data-pmedia],[data-prow] [data-ptext]{min-width:0;}
-/* Product rows collapse to a single centered column below 900px */
-@media (max-width:900px){
- [data-prow]{display:flex !important;flex-direction:column !important;align-items:center !important;gap:26px !important;}
- [data-prow] [data-pmedia],[data-prow] [data-ptext]{width:100% !important;max-width:520px !important;}
- [data-prow] [data-pmedia]{order:0 !important;position:static !important;top:auto !important;}
- [data-prow] [data-ptext]{order:1 !important;text-align:center !important;}
- [data-psizes]{justify-content:center !important;}
- [data-puline]{display:block !important;text-align:center !important;}
- [data-puline] span{margin-inline:auto !important;}
- [data-ptext] > p{max-width:52ch !important;margin-inline:auto !important;}
- [data-ice]{opacity:.4 !important;}
- /* stacked rows sit close together — tuck the flavor glow behind the card so
-    neighbouring rows' glows don't wash the whole viewport in colour */
- [data-pglow]{inset:22% 26% !important;filter:blur(22px) !important;opacity:.3 !important;}
+@media (max-width:820px){
+ [data-cbottle]{display:none !important;}
+ [data-us]{padding-left:34% !important;}
+ [data-chero]{min-height:clamp(220px,40vw,320px) !important;}
+ [data-infocard]{padding:32px 28px !important;grid-template-columns:1fr !important;gap:22px !important;}
 }
 @media (max-width:700px){
  [data-pad]{padding-inline:16px !important;}
  [data-rsp="foot"]{grid-template-columns:1fr !important;gap:26px !important;}
- [data-ccircle]{width:min(84vw,340px) !important;height:min(84vw,340px) !important;box-shadow:0 14px 30px color-mix(in srgb,var(--foreground) 10%,transparent),inset 0 1px 0 var(--card) !important;}
- [data-canimg]{height:min(56vw,250px) !important;}
- [data-ptext] > p{font-size:16px !important;}
-}
-/* Below 560px: size pills become a 2x2 grid so they always fit and stay tappable */
-@media (max-width:560px){
- [data-psizes]{display:grid !important;grid-template-columns:1fr 1fr !important;gap:12px !important;width:100% !important;max-width:340px !important;margin-inline:auto !important;}
- [data-sizepill]{width:100% !important;min-height:48px !important;padding:12px 10px !important;font-size:15px !important;}
 }
 @media (max-width:480px){
  [data-hlogo]{height:34px !important;}
@@ -101,9 +74,8 @@ a:hover{color:var(--secondary);}
 
   <div aria-hidden="true" style="position:absolute;inset:0;overflow:hidden;z-index:0;pointer-events:none">
     <div data-blob data-rate="0.85" style="position:absolute;top:3%;left:-8%;width:580px;height:580px;border-radius:9999px;background:var(--primary);opacity:.18;filter:blur(88px);animation:blobA 60s ease-in-out infinite;will-change:transform"></div>
-    <div data-blob data-rate="1" style="position:absolute;top:30%;right:-10%;width:600px;height:600px;border-radius:9999px;background:var(--secondary);opacity:.15;filter:blur(90px);animation:blobB 60s ease-in-out infinite;will-change:transform"></div>
-    <div data-blob data-rate="1.15" style="position:absolute;top:64%;left:0%;width:560px;height:560px;border-radius:9999px;background:var(--primary);opacity:.13;filter:blur(92px);animation:blobC 66s ease-in-out infinite;will-change:transform"></div>
-    <div data-blob data-rate="0.7" style="position:absolute;top:46%;left:40%;width:440px;height:440px;border-radius:9999px;background:var(--chart-1);opacity:.09;filter:blur(96px);animation:blobD 72s ease-in-out infinite;will-change:transform"></div>
+    <div data-blob data-rate="1" style="position:absolute;top:34%;right:-10%;width:600px;height:600px;border-radius:9999px;background:var(--secondary);opacity:.15;filter:blur(90px);animation:blobB 60s ease-in-out infinite;will-change:transform"></div>
+    <div data-blob data-rate="1.15" style="position:absolute;top:66%;left:0%;width:560px;height:560px;border-radius:9999px;background:var(--primary);opacity:.13;filter:blur(92px);animation:blobC 66s ease-in-out infinite;will-change:transform"></div>
     <div style="position:absolute;inset:0;background-image:linear-gradient(color-mix(in srgb,var(--primary) 6%,transparent) 1px,transparent 1px),linear-gradient(90deg,color-mix(in srgb,var(--primary) 6%,transparent) 1px,transparent 1px);background-size:64px 64px;-webkit-mask-image:radial-gradient(120% 90% at 50% 20%,#000,transparent 78%);mask-image:radial-gradient(120% 90% at 50% 20%,#000,transparent 78%);animation:gridPan 26s linear infinite;opacity:.5"></div>
     <div data-bubbles style="position:absolute;inset:0;overflow:hidden"></div>
     <div style="position:absolute;inset:0;opacity:.045;mix-blend-mode:multiply;background-image:url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22160%22 height=%22160%22><filter id=%22n%22><feTurbulence type=%22fractalNoise%22 baseFrequency=%220.85%22 numOctaves=%222%22 stitchTiles=%22stitch%22/></filter><rect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23n)%22/></svg>')"></div>
@@ -122,7 +94,6 @@ a:hover{color:var(--secondary);}
         <div style="display:flex;align-items:center;gap:16px;flex:none">
           <a href="index.html" style="display:flex;align-items:center;gap:5px;position:relative;overflow:hidden">
             <img data-hlogo src="assets/logos/logo-primary-on-white.png" alt="Matrix Cola" style="height:46px;width:auto">
-            <span data-logosweep style="position:absolute;top:0;bottom:0;left:0;width:40%;background:linear-gradient(100deg,transparent,color-mix(in srgb,var(--card) 85%,transparent),transparent);transform:translateX(-130%) skewX(-18deg);pointer-events:none"></span>
           </a>
           <button data-magnetic style="display:inline-flex;align-items:center;gap:6px;border:1.5px solid var(--input);background:transparent;border-radius:9999px;padding:7px 13px;cursor:pointer;color:var(--primary);font-family:var(--font-sans);font-weight:700;font-size:13px;transition:border-color .2s,color .2s" style-hover="border-color:var(--primary);color:var(--secondary)" style-focus="outline:2px solid var(--ring);outline-offset:2px">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3c2.6 2.6 2.6 15.4 0 18M12 3c-2.6 2.6-2.6 15.4 0 18"></path></svg>
@@ -151,83 +122,66 @@ a:hover{color:var(--secondary);}
       </sc-if>
     </header>
 
-    <section style="position:relative;padding:40px 0 20px;overflow:hidden">
-      <div data-secbubbles data-seed-count="14" style="position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden"></div>
-      <div aria-hidden="true" data-ice data-rate="16" style="position:absolute;left:6%;top:30%;width:clamp(70px,9vw,132px);--r:-8deg;animation:iceFloat 9s ease-in-out infinite;z-index:1;filter:drop-shadow(0 16px 22px color-mix(in srgb,var(--secondary) 22%,transparent))"><img src="assets/decor/cube-1.png" alt="" style="width:100%"></div>
-      <div aria-hidden="true" data-ice data-rate="26" style="position:absolute;left:15%;top:52%;width:clamp(46px,6vw,84px);--r:12deg;animation:iceFloat 12s ease-in-out infinite;animation-delay:-4s;z-index:1;filter:drop-shadow(0 12px 16px color-mix(in srgb,var(--secondary) 20%,transparent))"><img src="assets/decor/cube-3.png" alt="" style="width:100%"></div>
-      <div aria-hidden="true" data-ice data-rate="32" style="position:absolute;left:29%;top:-6%;width:clamp(54px,7vw,100px);--r:6deg;animation:iceFloat 11s ease-in-out infinite;animation-delay:-2s;z-index:1;filter:drop-shadow(0 14px 18px color-mix(in srgb,var(--secondary) 20%,transparent))"><img src="assets/decor/cube-2.png" alt="" style="width:100%"></div>
-      <div aria-hidden="true" data-ice data-rate="20" style="position:absolute;left:41%;top:8%;width:clamp(38px,5vw,70px);--r:-14deg;animation:iceFloat 13s ease-in-out infinite;animation-delay:-6s;z-index:1;filter:drop-shadow(0 10px 14px color-mix(in srgb,var(--secondary) 18%,transparent))"><img src="assets/decor/cube-1.png" alt="" style="width:100%"></div>
-      <div aria-hidden="true" data-ice data-rate="22" style="position:absolute;right:7%;top:36%;width:clamp(64px,8.5vw,120px);--r:9deg;animation:iceFloat 10s ease-in-out infinite;animation-delay:-5s;z-index:1;filter:drop-shadow(0 16px 20px color-mix(in srgb,var(--secondary) 22%,transparent))"><img src="assets/decor/cube-2.png" alt="" style="width:100%"></div>
-      <div aria-hidden="true" data-ice data-rate="30" style="position:absolute;right:20%;top:14%;width:clamp(42px,5.5vw,78px);--r:-5deg;animation:iceFloat 12s ease-in-out infinite;animation-delay:-3s;z-index:1;filter:drop-shadow(0 12px 16px color-mix(in srgb,var(--secondary) 20%,transparent))"><img src="assets/decor/cube-3.png" alt="" style="width:100%"></div>
-      <div data-pad style="max-width:1180px;margin:0 auto;padding-inline:32px;position:relative;z-index:2">
-        <h1 data-words style="text-align:center;font-family:var(--font-sans);font-weight:800;font-style:italic;color:var(--secondary);font-size:clamp(38px,8.4vw,104px);line-height:1;letter-spacing:-.01em;margin:0;padding:56px 0 40px">Explore<br>Every Flavor</h1>
+    <section style="position:relative;padding:30px 0 10px;overflow:visible">
+      <div data-secbubbles data-seed-count="12" style="position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden"></div>
+      <div data-pad data-chero style="max-width:1280px;margin:0 auto;padding-inline:32px;position:relative;z-index:1;min-height:clamp(380px,40vw,560px);display:flex;align-items:center">
+        <h1 data-words style="position:relative;z-index:1;width:100%;margin:0;font-family:var(--font-sans);font-weight:800;font-style:italic;color:var(--secondary);font-size:clamp(44px,9vw,118px);line-height:1.04;letter-spacing:-.01em">CONTACT<br><span data-us style="display:inline-block;padding-left:64%">US</span></h1>
+        <div aria-hidden="true" data-cbottle style="position:absolute;left:55%;top:43%;transform:translate(-50%,-50%);width:clamp(250px,30vw,440px);z-index:2;pointer-events:none;filter:drop-shadow(0 30px 40px color-mix(in srgb,var(--foreground) 26%,transparent))">
+          <img src="assets/decor/bottle-cola.png" alt="" style="width:100%;animation:bottleFloat 10s ease-in-out infinite">
+        </div>
       </div>
     </section>
 
-    <section style="position:relative;padding:8px 0 40px;overflow-x:clip">
-      <div data-pad style="max-width:1180px;margin:0 auto;padding-inline:32px;display:flex;flex-direction:column;gap:clamp(60px,9vw,120px)">
-        <sc-for list="{{ products }}" as="p" hint-placeholder-count="4">
-          <div data-reveal data-reveal-delay="{{ p.delay }}" data-enter="{{ p.enterT }}">
-            <div data-prow style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(30px,5vw,72px);align-items:start">
+    <section style="position:relative;padding:20px 0 60px">
+      <div data-secbubbles data-seed-count="10" style="position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden"></div>
+      <div data-pad style="max-width:1180px;margin:0 auto;padding-inline:32px;position:relative;z-index:1">
+        <h2 data-words data-uline style="text-align:left;font-family:var(--font-heading);font-weight:700;color:var(--primary);font-size:clamp(26px,4.6vw,44px);margin:0 0 36px">We&rsquo;re ready to help you!</h2>
 
-              <div data-pmedia data-canitem onMouseEnter="{{ p.onImgEnter }}" onMouseLeave="{{ p.onImgLeave }}" style="grid-column:{{ p.mediaCol }};position:sticky;top:96px;align-self:start;display:flex;justify-content:center;cursor:pointer">
-                <div aria-hidden="true" data-pglow style="position:absolute;inset:6% 10%;border-radius:9999px;background:radial-gradient(circle at 50% 46%,{{ p.glow }},transparent 66%);filter:blur(18px);z-index:0"></div>
-                <div data-ccircle style="position:relative;z-index:1;width:min(94%,440px);aspect-ratio:1/1;border-radius:34px;background:radial-gradient(circle at 34% 26%,var(--card),color-mix(in srgb,{{ p.color }} 7%,var(--card)) 82%);box-shadow:0 30px 64px color-mix(in srgb,var(--foreground) 14%,transparent),inset 0 1px 0 var(--card);display:grid;place-items:center;transition:box-shadow .3s ease">
-                  <div data-fizz style="position:absolute;inset:0;pointer-events:none;overflow:hidden;border-radius:34px"></div>
-                  <div data-canwrap style="position:relative">
-                    <img data-canimg src="{{ p.src }}" alt="{{ p.name }}" loading="lazy" style="display:block;height:clamp(240px,30vw,360px);width:auto;max-width:none;object-fit:contain;transform-origin:center;transform:{{ p.canTransform }};filter:{{ p.canFilter }};transition:transform .4s var(--ease-spring-can),filter .3s ease">
-                  </div>
-                </div>
-              </div>
-
-              <div data-ptext style="grid-column:{{ p.textCol }};grid-row:1">
-                <h2 style="margin:0;font-family:var(--font-heading);font-weight:700;color:{{ p.color }};font-size:clamp(30px,4.4vw,52px);line-height:1.05">{{ p.name }}</h2>
-                <p style="margin:20px 0 0;font-family:var(--font-sans);font-weight:700;font-size:clamp(15px,1.4vw,17px);line-height:1.7;color:var(--muted-foreground);max-width:440px">{{ p.blurb }}</p>
-
-                <div data-puline style="margin:28px 0 14px;display:inline-block">
-                  <p style="margin:0;font-family:var(--font-sans);font-weight:800;font-size:14px;letter-spacing:.02em;color:{{ p.color }}">Available Sizes:</p>
-                  <span style="display:block;margin-top:7px;width:44px;height:3px;border-radius:2px;background:{{ p.color }}"></span>
-                </div>
-                <div data-psizes style="display:flex;flex-wrap:wrap;gap:12px">
-                  <sc-for list="{{ p.sizes }}" as="s" hint-placeholder-count="4">
-                    <button data-sizepill data-magnetic onClick="{{ s.onSelect }}" style="font-family:var(--font-sans);font-weight:700;font-size:15px;padding:11px 22px;border-radius:9999px;cursor:pointer;white-space:nowrap;border:1.5px solid {{ s.border }};background:{{ s.bg }};color:{{ s.fg }};box-shadow:{{ s.shadow }};transition:transform .3s var(--ease-spring),background .2s ease,color .2s ease,border-color .2s ease,box-shadow .25s ease" style-active="transform:scale(.95)" style-focus="outline:2px solid var(--ring);outline-offset:2px">{{ s.label }}</button>
-                  </sc-for>
-                </div>
-
-                <div style="margin-top:30px;border-top:1px solid var(--border)">
-                  <button onClick="{{ p.onToggleNut }}" aria-expanded="{{ p.nutExpanded }}" style="width:100%;display:flex;align-items:center;justify-content:space-between;gap:12px;background:none;border:none;cursor:pointer;padding:16px 2px;font-family:var(--font-sans);font-weight:700;font-size:16px;color:{{ p.nutLabelColor }};transition:color .2s" style-focus="outline:2px solid var(--ring);outline-offset:2px;border-radius:6px">
-                    View Nutrition Facts
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="transform:{{ p.chevron }};transition:transform .35s var(--ease-spring)"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                  </button>
-                  <div data-nutwrap style="display:grid;grid-template-rows:{{ p.nutRows }};transition:grid-template-rows .45s var(--ease-out-expo)">
-                    <div style="overflow:hidden">
-                      <div style="border:1px solid {{ p.nutBorder }};border-radius:16px;background:color-mix(in srgb,var(--card) 78%,transparent);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);padding:24px 26px;margin:4px 0 8px">
-                        <h3 style="margin:0;font-family:var(--font-heading);font-weight:700;font-size:24px;color:var(--card-foreground)">Nutritional Information</h3>
-                        <p style="margin:6px 0 0;font-family:var(--font-sans);font-weight:700;font-size:14px;color:var(--muted-foreground)">2 servings per container</p>
-                        <div style="height:1px;background:var(--border);margin:16px 0"></div>
-                        <div style="display:flex;justify-content:space-between;font-family:var(--font-sans);font-weight:800;font-size:15px;color:var(--card-foreground)"><span>Serving Size</span><span>12 fl oz (360 mL)</span></div>
-                        <p style="margin:8px 0 0;font-family:var(--font-sans);font-weight:800;font-size:15px;color:var(--card-foreground)">Amount per serving</p>
-                        <div style="height:1px;background:var(--border);margin:16px 0"></div>
-                        <div style="display:flex;justify-content:space-between;font-family:var(--font-sans);font-weight:800;font-size:22px;color:var(--card-foreground)"><span>Calories</span><span>80</span></div>
-                        <div style="height:1px;background:var(--border);margin:16px 0"></div>
-                        <p style="margin:0 0 10px;text-align:right;font-family:var(--font-sans);font-weight:700;font-size:12px;color:var(--muted-foreground)">% Daily Value*</p>
-                        <sc-for list="{{ nutRows }}" as="n" hint-placeholder-count="7">
-                          <div style="display:flex;justify-content:space-between;padding:7px 0;border-top:1px solid color-mix(in srgb,var(--border) 60%,transparent);font-family:var(--font-sans);font-size:15px;color:var(--card-foreground)"><span><b style="font-weight:800">{{ n.label }}</b> {{ n.amt }}</span><span style="font-weight:800">{{ n.dv }}</span></div>
-                        </sc-for>
-                        <div style="height:1px;background:var(--border);margin:18px 0 14px"></div>
-                        <h3 style="margin:0 0 10px;font-family:var(--font-heading);font-weight:700;font-size:22px;color:var(--card-foreground)">Ingredients</h3>
-                        <p style="margin:0;font-family:var(--font-sans);font-weight:600;font-size:14px;line-height:1.6;color:var(--card-foreground)">TEA (WATER, BLACK TEA POWDER), HIGH FRUCTOSE CORN SYRUP, NATURAL FLAVORS, CITRIC ACID, SODIUM HEXAMETAPHOSPHATE (TO PROTECT TASTE), PHOSPHORIC ACID, POTASSIUM CITRATE, POTASSIUM SORBATE AND SODIUM BENZOATE (TO PROTECT TASTE), ACESULFAME POTASSIUM, SUCRALOSE, CALCIUM DISODIUM EDTA (TO PROTECT TASTE).</p>
-                        <div style="height:1px;background:var(--border);margin:16px 0 12px"></div>
-                        <p style="margin:0;font-family:var(--font-sans);font-weight:600;font-size:12px;line-height:1.5;color:var(--muted-foreground)">* Not a significant source of saturated fat, trans fat, cholesterol, dietary fiber, vitamin D, calcium and iron.</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-            </div>
+        <div data-reveal style="display:flex;flex-direction:column;gap:22px">
+          <div>
+            <label for="cf-name" style="display:block;font-family:var(--font-heading);font-weight:700;font-size:18px;color:var(--secondary);margin:0 0 10px">Name</label>
+            <input id="cf-name" type="text" placeholder="Your Name" value="{{ fName }}" onInput="{{ onName }}" style="width:100%;border:1.5px solid transparent;background:var(--muted);border-radius:9999px;padding:16px 26px;font-family:var(--font-sans);font-weight:600;font-size:16px;color:var(--foreground);outline:none;transition:border-color .2s,background .2s" style-focus="border-color:var(--ring);background:var(--card)">
           </div>
-        </sc-for>
+          <div>
+            <label for="cf-email" style="display:block;font-family:var(--font-heading);font-weight:700;font-size:18px;color:var(--secondary);margin:0 0 10px">Email</label>
+            <input id="cf-email" type="email" placeholder="Your Email" value="{{ fEmail }}" onInput="{{ onEmail }}" style="width:100%;border:1.5px solid transparent;background:var(--muted);border-radius:9999px;padding:16px 26px;font-family:var(--font-sans);font-weight:600;font-size:16px;color:var(--foreground);outline:none;transition:border-color .2s,background .2s" style-focus="border-color:var(--ring);background:var(--card)">
+          </div>
+          <div>
+            <label for="cf-subject" style="display:block;font-family:var(--font-heading);font-weight:700;font-size:18px;color:var(--secondary);margin:0 0 10px">Subject</label>
+            <input id="cf-subject" type="text" placeholder="Your Subject" value="{{ fSubject }}" onInput="{{ onSubject }}" style="width:100%;border:1.5px solid transparent;background:var(--muted);border-radius:9999px;padding:16px 26px;font-family:var(--font-sans);font-weight:600;font-size:16px;color:var(--foreground);outline:none;transition:border-color .2s,background .2s" style-focus="border-color:var(--ring);background:var(--card)">
+          </div>
+          <div>
+            <label for="cf-message" style="display:block;font-family:var(--font-heading);font-weight:700;font-size:18px;color:var(--secondary);margin:0 0 10px">Message</label>
+            <textarea id="cf-message" placeholder="Your Message" rows="7" value="{{ fMessage }}" onInput="{{ onMessage }}" style="width:100%;border:1.5px solid transparent;background:var(--muted);border-radius:28px;padding:18px 26px;font-family:var(--font-sans);font-weight:600;font-size:16px;color:var(--foreground);outline:none;resize:vertical;min-height:200px;transition:border-color .2s,background .2s" style-focus="border-color:var(--ring);background:var(--card)"></textarea>
+          </div>
+          <sc-if value="{{ showError }}" hint-placeholder-val="{{ false }}">
+            <p style="margin:0;font-family:var(--font-sans);font-weight:700;font-size:14px;color:var(--destructive)">Please fill in your name, a valid email and a message.</p>
+          </sc-if>
+          <button data-magnetic onClick="{{ onSend }}" style="width:100%;margin-top:10px;border:none;border-radius:9999px;padding:19px 36px;cursor:pointer;font-family:var(--font-heading);font-weight:700;font-size:18px;color:var(--primary-foreground);background:{{ sendBg }};box-shadow:0 14px 30px {{ sendShadow }};transition:background .3s ease,box-shadow .3s ease" style-active="transform:scale(.985)" style-focus="outline:2px solid var(--ring);outline-offset:3px">{{ sendLabel }}</button>
+        </div>
+
+        <div data-reveal data-reveal-delay="120" style="position:relative;margin-top:110px">
+          <h2 data-words data-uline style="text-align:left;font-family:var(--font-heading);font-weight:700;color:var(--primary);font-size:clamp(24px,4vw,38px);margin:0 0 14px">Or reach us directly</h2>
+          <p style="margin:0 0 30px;font-family:var(--font-sans);font-weight:700;font-size:clamp(15px,1.4vw,17px);line-height:1.6;color:var(--muted-foreground);max-width:520px">Prefer a call or a quick email? Our team in Amman is just one sip away.</p>
+          <div data-infocard style="background:var(--card);border-radius:24px;box-shadow:0 24px 50px color-mix(in srgb,var(--foreground) 12%,transparent);padding:44px 56px;display:grid;grid-template-columns:1fr 1fr;gap:30px 40px">
+            <a href="tel:0650008312" style="display:flex;align-items:center;gap:16px;color:var(--foreground)" style-hover="color:var(--primary)">
+              <span style="flex:none;width:46px;height:46px;border-radius:12px;display:grid;place-items:center;background:var(--accent);color:var(--primary)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"></path></svg></span>
+              <span style="font-family:var(--font-sans);font-weight:700;font-size:17px">06 5000 8312</span>
+            </a>
+            <a href="mailto:info@matrixcola.jo" style="display:flex;align-items:center;gap:16px;color:var(--foreground)" style-hover="color:var(--primary)">
+              <span style="flex:none;width:46px;height:46px;border-radius:12px;display:grid;place-items:center;background:var(--accent);color:var(--primary)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="3"></rect><path d="m2 7 10 6 10-6"></path></svg></span>
+              <span style="font-family:var(--font-sans);font-weight:700;font-size:17px">info@matrixcola.jo</span>
+            </a>
+            <a href="tel:+9627996087" style="display:flex;align-items:center;gap:16px;color:var(--foreground)" style-hover="color:var(--primary)">
+              <span style="flex:none;width:46px;height:46px;border-radius:12px;display:grid;place-items:center;background:var(--accent);color:var(--primary)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="2" width="12" height="20" rx="3"></rect><line x1="12" y1="18" x2="12" y2="18.01"></line></svg></span>
+              <span style="font-family:var(--font-sans);font-weight:700;font-size:17px">+962 7996087</span>
+            </a>
+            <span style="display:flex;align-items:center;gap:16px;color:var(--foreground)">
+              <span style="flex:none;width:46px;height:46px;border-radius:12px;display:grid;place-items:center;background:var(--accent);color:var(--primary)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path><circle cx="12" cy="10" r="3"></circle></svg></span>
+              <span style="font-family:var(--font-sans);font-weight:700;font-size:17px">Amman, Jordan</span>
+            </span>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -240,7 +194,7 @@ a:hover{color:var(--secondary);}
               <h4 style="font-family:var(--font-sans);font-weight:700;font-size:15px;color:var(--muted-foreground);margin:0 0 26px">{{ col.h }}</h4>
               <div style="display:flex;flex-direction:column;gap:14px">
                 <sc-for list="{{ col.links }}" as="link" hint-placeholder-count="4">
-                  <a href="#" style="font-family:var(--font-sans);font-weight:700;font-size:14px;color:var(--primary)" style-hover="color:var(--secondary)">{{ link }}</a>
+                  <a href="{{ link.href }}" style="font-family:var(--font-sans);font-weight:700;font-size:14px;color:var(--primary)" style-hover="color:var(--secondary)">{{ link.label }}</a>
                 </sc-for>
               </div>
             </div>
@@ -265,57 +219,40 @@ a:hover{color:var(--secondary);}
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900}}">
 class Component extends DCLogic {
-  state = { scrolled:false, menuOpen:false, narrow:false, hoveredImg:null, sizes:{ cola:'355 ml', orange:'250 ml', fruit:'355 ml', up:'1 Liter' }, openNut:'fruit' };
+  state = { scrolled:false, menuOpen:false, fName:'', fEmail:'', fSubject:'', fMessage:'', sent:false, showError:false };
 
   componentDidMount(){
     const R = this.R = !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
-    this._coarse = !!(window.matchMedia && matchMedia('(pointer:coarse)').matches);
-    this.boost = 1; this.targetBoost = 1; this.vel = 0;
-
     this._alive = true; this._shown = new Set();
     this.setupReveals(R);
     this.setupHeadings(R);
-    this.setupCanEntrance(R);
     this.setupBubbles(R);
-    this.setupFizz(R);
     this.setupCursorFizz(R);
-    this.setupCanTilt(R);
     this._sweep = () => {
       if (this._pending) this._pending.forEach(el => { if (el.getBoundingClientRect().bottom < 60) this._instantShow(el); });
       if (this._pendingH) this._pendingH.forEach(h => { if (h.getBoundingClientRect().bottom < 60) this._instantHead(h); });
-      if (this._canRows) this._canRows.forEach((parts, row) => { if (row.getBoundingClientRect().bottom < 60) this._canInstantRow(row); });
     };
-
     this.blobs = Array.prototype.slice.call(document.querySelectorAll('[data-blob]'));
-    this.iceLayers = Array.prototype.slice.call(document.querySelectorAll('[data-ice]'));
-
     this._onScroll = () => {
       const s = window.scrollY > 80; if (s !== this.state.scrolled) this.setState({ scrolled:s });
-      this.smoothY = window.scrollY;
       if (this._sweep) this._sweep();
     };
     window.addEventListener('scroll', this._onScroll, { passive:true });
-    this._mqN = window.matchMedia ? matchMedia('(max-width:900px)') : null;
-    if (this._mqN) { this._onMq = () => this.setState({ narrow:this._mqN.matches }); this._onMq(); this._mqN.addEventListener('change', this._onMq); }
-
-    // Native scrolling (no wheel hijack); the rAF loop drives parallax + progress bar.
-    if (!R) { this.setupMagnetic(); this.smoothY = window.scrollY; this.py = this.smoothY; this.loop(); }
+    if (!R) { this.setupMagnetic(); this.loop(); }
   }
 
   componentWillUnmount(){
     this._alive = false;
     window.removeEventListener('scroll', this._onScroll);
-    if (this._mqN) this._mqN.removeEventListener('change', this._onMq);
-    if (this._wheel) window.removeEventListener('wheel', this._wheel);
     if (this._io) this._io.disconnect();
     if (this._ioH) this._ioH.disconnect();
-    if (this._ioCans) this._ioCans.disconnect();
     if (this._raf) cancelAnimationFrame(this._raf);
     if (this._fizzRaf) cancelAnimationFrame(this._fizzRaf);
     if (this._cursorMove) window.removeEventListener('mousemove', this._cursorMove);
     if (this._cursorClick) window.removeEventListener('mousedown', this._cursorClick);
     if (this._cursorLeave) document.removeEventListener('mouseleave', this._cursorLeave);
     if (this._onResizeFizz) window.removeEventListener('resize', this._onResizeFizz);
+    if (this._sentT) clearTimeout(this._sentT);
   }
 
   componentDidUpdate(){
@@ -350,14 +287,12 @@ class Component extends DCLogic {
           n.replaceWith(frag);
         } else if (n.nodeType === 1) {
           if (n.tagName === 'BR') { line++; return; }
-          if (n.tagName === 'IMG') { n.replaceWith(mk(n.cloneNode(true), true)); return; }
           walk(n);
         }
       });
     };
     walk(h);
-    let order = words;
-    order.forEach((w, i) => { w._delay = (byLines ? w._line : i) * 130; });
+    words.forEach((w, i) => { w._delay = (byLines ? w._line : i) * 130; });
     h._words = words;
     if (h.hasAttribute('data-uline')) {
       const u = document.createElement('span');
@@ -397,7 +332,7 @@ class Component extends DCLogic {
     });
     void document.documentElement.offsetHeight;
     const show = (el) => {
-      el.style.transition = 'opacity .7s var(--ease-out-expo),transform .8s var(--ease-spring),flex-grow .5s var(--ease-spring)';
+      el.style.transition = 'opacity .7s var(--ease-out-expo),transform .8s var(--ease-spring)';
       this.revealClips(el).forEach(c => { if (c !== el) c.style.transition = 'transform .4s var(--ease-spring),box-shadow .4s ease,clip-path .75s var(--ease-out-expo)'; else c.style.transition += ',clip-path .75s var(--ease-out-expo)'; });
       void el.offsetHeight;
       el.style.opacity = '1'; el.style.transform = 'none';
@@ -436,8 +371,8 @@ class Component extends DCLogic {
       words.forEach(w => {
         last = Math.max(last, w._delay);
         setTimeout(() => {
-          w.style.transform = w._final || 'translateY(0) rotate(0deg)';
-          setTimeout(() => { w.style.removeProperty('transition'); if (!w._final) w.style.removeProperty('transform'); }, 900);
+          w.style.transform = 'translateY(0) rotate(0deg)';
+          setTimeout(() => { w.style.removeProperty('transition'); w.style.removeProperty('transform'); }, 900);
         }, w._delay);
       });
       if (h._uline) setTimeout(() => {
@@ -448,38 +383,12 @@ class Component extends DCLogic {
     this._pendingH = new Set(heads);
     this._instantHead = (h) => {
       this._pendingH.delete(h); if (this._ioH) this._ioH.unobserve(h);
-      (h._words || []).forEach(w => { w.style.transition = 'none'; w.style.transform = w._final || 'none'; });
+      (h._words || []).forEach(w => { w.style.transition = 'none'; w.style.transform = 'none'; });
     };
     this._ioH = new IntersectionObserver((entries) => {
       entries.forEach(e => { if (e.isIntersecting) { this._ioH.unobserve(e.target); this._pendingH.delete(e.target); show(e.target); } });
     }, { threshold:0.35 });
     heads.forEach(h => this._ioH.observe(h));
-  }
-
-  setupCanEntrance(R){
-    // Product cards are large and revealed by the row-level [data-reveal] observer.
-    // A separate scale-in entrance here risks leaving the card stuck mid-transform
-    // on tall rows that never cross the intersection threshold, so we only do a
-    // gentle one-shot lift of the can image — never scale the sized card itself.
-    if (R || !('IntersectionObserver' in window)) return;
-    const wraps = Array.prototype.slice.call(document.querySelectorAll('[data-canitem] [data-canwrap]'));
-    if (!wraps.length) return;
-    wraps.forEach(w => { w.style.opacity = '0'; });
-    const run = (w) => {
-      w.style.removeProperty('opacity');
-      w.animate([
-        { transform:'translateY(28px)', opacity:0 },
-        { transform:'translateY(-6px)', opacity:1, offset:0.62 },
-        { transform:'translateY(2px)', offset:0.84 },
-        { transform:'translateY(0)', opacity:1 }
-      ], { duration:680, easing:'cubic-bezier(.3,.75,.35,1)' });
-    };
-    this._ioCans = new IntersectionObserver((es) => {
-      es.forEach(e => { if (e.isIntersecting) { this._ioCans.unobserve(e.target); run(e.target); } });
-    }, { threshold:0, rootMargin:'0px 0px -8% 0px' });
-    wraps.forEach(w => this._ioCans.observe(w));
-    // Safety net: if any wrap is still hidden shortly after load, reveal it.
-    setTimeout(() => wraps.forEach(w => { if (w.style.opacity === '0') w.style.removeProperty('opacity'); }), 1600);
   }
 
   glossBubble(o){
@@ -492,7 +401,7 @@ class Component extends DCLogic {
   }
   spawnFoot(layer, cfg, seed){
     const b = this.glossBubble({ s:Math.round(cfg.sMin + Math.random() * (cfg.sMax - cfg.sMin)), blue:Math.random() < 0.18, blur:cfg.blur });
-    const x = cfg.spread === 'full' ? Math.random() * 100 : (Math.random() < 0.45 ? 36 + Math.random() * 28 : Math.random() * 100);
+    const x = Math.random() * 100;
     b.style.left = x.toFixed(1) + '%'; b.style.bottom = '-18px';
     layer.appendChild(b);
     const H = layer.clientHeight || 340;
@@ -514,56 +423,27 @@ class Component extends DCLogic {
     const secs = Array.prototype.slice.call(document.querySelectorAll('[data-secbubbles]'));
     if (R) {
       if (amb) for (let i = 0; i < 18; i++) { const b = this.glossBubble({ s:Math.round(5 + Math.random() * 11), blue:i % 4 === 0, blur:i % 3 === 0 }); b.style.left = (Math.random() * 100).toFixed(1) + '%'; b.style.bottom = (Math.random() * 96).toFixed(0) + '%'; b.style.opacity = '.14'; amb.appendChild(b); }
-      secs.forEach(s => { const n = parseInt(s.getAttribute('data-seed-count') || '10', 10); for (let i = 0; i < n; i++) { const b = this.glossBubble({ s:Math.round(5 + Math.random() * 12), blue:i % 4 === 0, blur:false }); b.style.left = (Math.random() * 100).toFixed(1) + '%'; b.style.bottom = (Math.random() * 88).toFixed(0) + '%'; b.style.opacity = '.16'; s.appendChild(b); } });
-      if (foot) for (let i = 0; i < 16; i++) { const b = this.glossBubble({ s:Math.round(4 + Math.random() * 10), blue:i % 4 === 0, blur:false }); b.style.left = (Math.random() * 100).toFixed(1) + '%'; b.style.bottom = (Math.random() * 78).toFixed(0) + '%'; b.style.opacity = '.18'; foot.appendChild(b); }
       return;
     }
     if (amb) [
-      { n:18, blur:true,  op:0.14, sMin:7, sMax:17, dMin:20, dMax:30, rate:0.02, spread:'full' },
-      { n:26, blur:false, op:0.24, sMin:6, sMax:13, dMin:14, dMax:22, rate:0.05, spread:'full' }
+      { n:16, blur:true,  op:0.14, sMin:7, sMax:17, dMin:20, dMax:30 },
+      { n:22, blur:false, op:0.24, sMin:6, sMax:13, dMin:14, dMax:22 }
     ].forEach(cfg => { const layer = document.createElement('div'); layer.style.cssText = 'position:fixed;left:0;right:0;bottom:0;top:0;will-change:transform'; amb.appendChild(layer); for (let i = 0; i < cfg.n; i++) this.spawnFoot(layer, cfg, true); });
     secs.forEach(sec => {
       const n = parseInt(sec.getAttribute('data-seed-count') || '10', 10);
-      const cfg = { blur:false, op:0.34, sMin:6, sMax:16, dMin:9, dMax:15, spread:'full' };
-      const heavy = Math.max(7, Math.round(n * 0.45));
+      const cfg = { blur:false, op:0.32, sMin:6, sMax:16, dMin:9, dMax:15 };
       const layer = document.createElement('div'); layer.style.cssText = 'position:absolute;inset:0;will-change:transform'; sec.appendChild(layer);
       for (let i = 0; i < n; i++) this.spawnFoot(layer, cfg, true);
-      const cfg2 = { blur:true, op:0.16, sMin:9, sMax:20, dMin:16, dMax:24, spread:'full' };
-      for (let i = 0; i < heavy; i++) this.spawnFoot(layer, cfg2, true);
     });
     if (!foot) return;
-    this.footLayers = [];
     [
-      { n:20, blur:true,  op:0.16, sMin:6, sMax:14, dMin:14, dMax:18, rate:0.015 },
-      { n:26, blur:false, op:0.32, sMin:5, sMax:12, dMin:8,  dMax:12, rate:0.035 },
-      { n:14, blur:false, op:0.42, sMin:8, sMax:16, dMin:5,  dMax:8,  rate:0.06 }
+      { n:18, blur:true,  op:0.16, sMin:6, sMax:14, dMin:14, dMax:18 },
+      { n:22, blur:false, op:0.32, sMin:5, sMax:12, dMin:8,  dMax:12 }
     ].forEach(cfg => {
       const layer = document.createElement('div');
       layer.style.cssText = 'position:absolute;inset:0;will-change:transform';
       foot.appendChild(layer);
-      this.footLayers.push({ el:layer, rate:cfg.rate });
       for (let i = 0; i < cfg.n; i++) this.spawnFoot(layer, cfg, true);
-    });
-  }
-  setupFizz(R){
-    if (R) return;
-    Array.prototype.slice.call(document.querySelectorAll('[data-canitem]')).forEach(item => {
-      const fizz = item.querySelector('[data-fizz]');
-      item.addEventListener('mouseenter', () => {
-        if (!fizz) return;
-        const n = 8 + Math.floor(Math.random() * 4);
-        for (let i = 0; i < n; i++) {
-          const b = document.createElement('span');
-          const s = 5 + Math.random() * 4, x = (Math.random() * 2 - 1) * 60, rise = 60 + Math.random() * 50, dur = 620 + Math.random() * 380;
-          b.style.cssText = 'position:absolute;left:50%;top:64%;width:' + s.toFixed(0) + 'px;height:' + s.toFixed(0) + 'px;border-radius:9999px;background:color-mix(in srgb,var(--primary) 26%,transparent);pointer-events:none;will-change:transform';
-          fizz.appendChild(b);
-          const a = b.animate([
-            { transform:'translate(calc(-50% + ' + x.toFixed(0) + 'px),0) scale(1)', opacity:0.85 },
-            { transform:'translate(calc(-50% + ' + (x * 1.5).toFixed(0) + 'px),-' + rise.toFixed(0) + 'px) scale(.3)', opacity:0 }
-          ], { duration:dur, easing:'cubic-bezier(.3,.8,.4,1)' });
-          a.onfinish = () => b.remove();
-        }
-      });
     });
   }
 
@@ -571,25 +451,20 @@ class Component extends DCLogic {
     this._fizzBar = document.querySelector('[data-scrollfizz]');
     if (R) return;
     const spot = document.querySelector('[data-spotlight]');
-    const glow = document.querySelector('[data-glow]');
     const canvas = document.querySelector('[data-fizzcanvas]');
     if (!canvas) return;
-    const fine = window.matchMedia && matchMedia('(hover:hover) and (pointer:fine)').matches;
-    if (fine && glow) document.documentElement.classList.add('glow-cursor');
     const ctx = canvas.getContext('2d');
     const DPR = Math.min(2, window.devicePixelRatio || 1);
     const fit = () => { canvas.width = Math.floor(innerWidth * DPR); canvas.height = Math.floor(innerHeight * DPR); canvas.style.width = innerWidth + 'px'; canvas.style.height = innerHeight + 'px'; ctx.setTransform(DPR,0,0,DPR,0,0); };
     fit(); this._onResizeFizz = fit; window.addEventListener('resize', fit);
-    const parts = this._fizzParts = [];
+    const parts = [];
     let mx = innerWidth / 2, my = innerHeight / 2, px = mx, py = my, moved = 0, spawnAcc = 0;
-    const hot = 'a,button,[data-magnetic],[data-canitem]';
     this._cursorMove = (e) => {
       mx = e.clientX; my = e.clientY; moved = 1;
-      if (glow) { glow.style.opacity = '1'; const big = e.target.closest && e.target.closest(hot); glow.style.width = big ? '68px' : '46px'; glow.style.height = big ? '68px' : '46px'; }
       if (spot) { spot.style.opacity = '1'; spot.style.transform = 'translate(' + (mx - innerWidth / 2).toFixed(0) + 'px,' + (my - innerHeight / 2).toFixed(0) + 'px)'; }
     };
     window.addEventListener('mousemove', this._cursorMove, { passive:true });
-    this._cursorLeave = () => { if (spot) spot.style.opacity = '0'; if (glow) glow.style.opacity = '0'; };
+    this._cursorLeave = () => { if (spot) spot.style.opacity = '0'; };
     document.addEventListener('mouseleave', this._cursorLeave);
     this._cursorClick = (e) => { const n = 14; for (let i = 0; i < n; i++) { const a = (Math.PI * 2 * i) / n + Math.random() * 0.5; const sp = 1.4 + Math.random() * 2.6; parts.push({ x:e.clientX, y:e.clientY, vx:Math.cos(a) * sp, vy:Math.sin(a) * sp - 1, r:2 + Math.random() * 3.5, life:1, blue:Math.random() < 0.25, burst:true }); }
       const ring = document.createElement('div'); ring.setAttribute('data-cursor-ring',''); ring.style.cssText = 'position:fixed;left:' + e.clientX + 'px;top:' + e.clientY + 'px;z-index:9997;pointer-events:none;width:34px;height:34px;border-radius:9999px;border:2px solid color-mix(in srgb,var(--primary) 60%,transparent);transform:translate(-50%,-50%);animation:ringPop .55s ease-out forwards'; document.body.appendChild(ring); setTimeout(() => ring.remove(), 560);
@@ -598,7 +473,6 @@ class Component extends DCLogic {
     const draw = () => {
       ctx.clearRect(0, 0, innerWidth, innerHeight);
       const dx = mx - px, dy = my - py, sp = Math.hypot(dx, dy); px += dx * 0.25; py += dy * 0.25;
-      if (glow) { glow.style.left = px.toFixed(1) + 'px'; glow.style.top = py.toFixed(1) + 'px'; }
       if (moved) { spawnAcc += sp; while (spawnAcc > 26) { spawnAcc -= 26; parts.push({ x:mx + (Math.random() * 16 - 8), y:my + (Math.random() * 16 - 8), vx:(Math.random() * 2 - 1) * 0.5, vy:-0.5 - Math.random() * 1.1, r:1.6 + Math.random() * 3, life:1, blue:Math.random() < 0.2 }); } }
       for (let i = parts.length - 1; i >= 0; i--) {
         const p = parts[i];
@@ -617,27 +491,13 @@ class Component extends DCLogic {
     this._fizzRaf = requestAnimationFrame(draw);
   }
 
-  setupCanTilt(R){
-    if (R) return;
-    this._tiltCans = Array.prototype.slice.call(document.querySelectorAll('[data-canitem]')).map(item => ({ item, wrap:item.querySelector('[data-canwrap]'), circle:item.querySelector('[data-ccircle]') }));
-    this._tiltCans.forEach(o => {
-      o.item.addEventListener('mousemove', (e) => {
-        const r = o.item.getBoundingClientRect();
-        const nx = (e.clientX - (r.left + r.width / 2)) / (r.width / 2);
-        const ny = (e.clientY - (r.top + r.height / 2)) / (r.height / 2);
-        if (o.circle) { o.circle.style.transition = 'transform .08s linear,box-shadow .3s ease'; o.circle.style.transform = 'perspective(760px) rotateY(' + (nx * 10).toFixed(1) + 'deg) rotateX(' + (-ny * 10).toFixed(1) + 'deg)'; }
-      });
-      o.item.addEventListener('mouseleave', () => { if (o.circle) { o.circle.style.transition = 'transform .5s var(--ease-spring),box-shadow .3s ease'; o.circle.style.transform = 'perspective(760px) rotateY(0) rotateX(0)'; } });
-    });
-  }
-
   setupMagnetic(){
     Array.prototype.slice.call(document.querySelectorAll('[data-magnetic]')).forEach(el => {
       el.addEventListener('mousemove', (e) => {
         const r = el.getBoundingClientRect();
         const dx = e.clientX - (r.left + r.width / 2), dy = e.clientY - (r.top + r.height / 2);
         el.style.transition = 'transform .1s linear';
-        el.style.transform = 'translate(' + (dx * 0.35).toFixed(1) + 'px,' + (dy * 0.35).toFixed(1) + 'px)';
+        el.style.transform = 'translate(' + (dx * 0.12).toFixed(1) + 'px,' + (dy * 0.25).toFixed(1) + 'px)';
       });
       el.addEventListener('mouseleave', () => { el.style.transition = 'transform .5s var(--ease-spring)'; el.style.transform = 'translate(0,0)'; });
     });
@@ -646,13 +506,9 @@ class Component extends DCLogic {
   _updateFizzBar(){ if (!this._fizzBar) return; const vh = window.innerHeight; const mx = document.documentElement.scrollHeight - vh; const p = mx > 0 ? Math.max(0, Math.min(1, window.scrollY / mx)) : 0; this._fizzBar.style.transform = 'scaleX(' + p.toFixed(4) + ')'; }
 
   loop(){
-    // Desktop only — native scrolling, this just drives the parallax + progress bar.
     const step = () => {
-      this.smoothY = window.scrollY;
-      const vh = window.innerHeight;
-      this.blobs.forEach(b => { const rate = parseFloat(b.getAttribute('data-rate') || '1'); b.style.translate = '0 ' + (-this.smoothY * 0.06 * rate).toFixed(1) + 'px'; });
-      this.iceLayers.forEach(ic => { const rate = parseFloat(ic.getAttribute('data-rate') || '20'); ic.style.translate = '0 ' + (-this.smoothY * 0.001 * rate).toFixed(1) + 'px'; });
-      if (this.footLayers && this.footBox) { const ft = this.footBox.getBoundingClientRect().top - vh; this.footLayers.forEach(l => { l.el.style.translate = '0 ' + Math.max(-46, Math.min(46, ft * l.rate)).toFixed(1) + 'px'; }); }
+      const y = window.scrollY;
+      this.blobs.forEach(b => { const rate = parseFloat(b.getAttribute('data-rate') || '1'); b.style.translate = '0 ' + (-y * 0.06 * rate).toFixed(1) + 'px'; });
       this._updateFizzBar();
       this._raf = requestAnimationFrame(step);
     };
@@ -661,76 +517,19 @@ class Component extends DCLogic {
 
   renderVals(){
     const S = this.state;
-    const CAN = (n) => 'assets/cans/can-0' + n + '-transparent.png';
-
     const navItems = [
       { label:'Company', href:'index.html' },
-      { label:'Products', href:'products.html', active:true },
+      { label:'Products', href:'products.html' },
       { label:'Careers', href:'#' },
       { label:'Maps', href:'#' },
       { label:'Blogs', href:'news.html' },
-      { label:'Contact us', href:'contact.html' },
+      { label:'Contact us', href:'contact.html', active:true },
     ].map(it => ({ label:it.label, href:it.href, active:!!it.active, color:it.active ? 'var(--primary)' : 'var(--foreground)' }));
 
-    const BODY = 'simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry’s James Mosley.';
-    const SIZES = ['250 ml','355 ml','1 Liter','2 Liter'];
-    const DEF = [
-      { key:'cola',   name:'Matrix Cola',  color:'var(--chart-4)', can:1, mediaLeft:true  },
-      { key:'orange', name:'Orange Cola',  color:'var(--chart-1)', can:6, mediaLeft:false },
-      { key:'fruit',  name:'Fruit Cola',   color:'var(--chart-3)', can:8, mediaLeft:true  },
-      { key:'up',     name:'Matrix Up',    color:'var(--chart-2)', can:3, mediaLeft:false },
-    ];
-
-    const products = DEF.map((d, i) => {
-      const hov = S.hoveredImg === d.key;
-      const nutOpen = S.openNut === d.key;
-      const mediaLeft = S.narrow ? true : d.mediaLeft;
-      const sizes = SIZES.map(label => {
-        const sel = S.sizes[d.key] === label;
-        return {
-          label,
-          bg: sel ? d.color : 'transparent',
-          fg: sel ? 'var(--primary-foreground)' : 'var(--foreground)',
-          border: sel ? d.color : 'var(--input)',
-          shadow: sel ? '0 10px 22px color-mix(in srgb,' + d.color + ' 34%,transparent)' : 'none',
-          onSelect: () => this.setState(st => ({ sizes: Object.assign({}, st.sizes, { [d.key]:label }) })),
-        };
-      });
-      return {
-        key:d.key, name:d.name, color:d.color, src:CAN(d.can), blurb:BODY,
-        delay:String((i % 2) * 90),
-        enterT:'translateY(46px) rotate(' + (i % 2 ? 1 : -1) + 'deg)',
-        mediaCol: S.narrow ? '1' : (mediaLeft ? '1' : '2'),
-        textCol:  S.narrow ? '1' : (mediaLeft ? '2' : '1'),
-        glow: 'color-mix(in srgb,' + d.color + ' 30%,transparent)',
-        canTransform: hov ? 'rotate(6deg) scale(1.09)' : 'rotate(0) scale(1)',
-        canFilter: hov ? 'drop-shadow(0 26px 30px color-mix(in srgb,var(--foreground) 30%,transparent))' : 'drop-shadow(0 16px 22px color-mix(in srgb,var(--foreground) 16%,transparent))',
-        onImgEnter: () => this.setState({ hoveredImg:d.key }),
-        onImgLeave: () => this.setState({ hoveredImg:null }),
-        sizes,
-        nutExpanded: nutOpen ? 'true' : 'false',
-        nutRows: nutOpen ? '1fr' : '0fr',
-        chevron: nutOpen ? 'rotate(180deg)' : 'rotate(0)',
-        nutLabelColor: nutOpen ? d.color : 'var(--foreground)',
-        nutBorder: nutOpen ? 'color-mix(in srgb,' + d.color + ' 45%,var(--border))' : 'var(--border)',
-        onToggleNut: () => this.setState(st => ({ openNut: st.openNut === d.key ? null : d.key })),
-      };
-    });
-
-    const nutRows = [
-      { label:'Total Fat', amt:'0g', dv:'0%' },
-      { label:'Sodium', amt:'115mg', dv:'5%' },
-      { label:'Total Carbohydrate', amt:'22g', dv:'8%' },
-      { label:'Total Sugars', amt:'22g', dv:'-' },
-      { label:'Includes Added Sugars', amt:'22g', dv:'44%' },
-      { label:'Protein', amt:'0g', dv:'-' },
-      { label:'Potassium', amt:'80mg', dv:'2%' },
-    ];
-
     const footerCols = [
-      { h:'ABOUT US', links:['Our Company','Our Brands','Investors','Policies, Practices & Reports','Careers'] },
-      { h:'Need Help?', links:['FAQ','Contact Us','International'] },
-      { h:'Useful links', links:['Privacy Policy','Cookies Policy','Cookies Settings','Notice at Collection','Do Not Sell or Share My Personal Information','Terms of Service'] },
+      { h:'ABOUT US', links:[{label:'Our Company',href:'index.html'},{label:'Our Brands',href:'products.html'},{label:'Investors',href:'#'},{label:'Policies, Practices & Reports',href:'#'},{label:'Careers',href:'#'}] },
+      { h:'Need Help?', links:[{label:'FAQ',href:'#'},{label:'Contact Us',href:'contact.html'},{label:'International',href:'#'}] },
+      { h:'Useful links', links:[{label:'Privacy Policy',href:'#'},{label:'Cookies Policy',href:'#'},{label:'Cookies Settings',href:'#'},{label:'Notice at Collection',href:'#'},{label:'Do Not Sell or Share My Personal Information',href:'#'},{label:'Terms of Service',href:'#'}] },
     ];
 
     return {
@@ -742,8 +541,23 @@ class Component extends DCLogic {
       menuOpen: S.menuOpen,
       toggleMenu: () => this.setState(st => ({ menuOpen: !st.menuOpen })),
       closeMenu: () => this.setState({ menuOpen:false }),
-      navItems,
-      products, nutRows, footerCols,
+      navItems, footerCols,
+      fName:S.fName, fEmail:S.fEmail, fSubject:S.fSubject, fMessage:S.fMessage,
+      onName: (e) => this.setState({ fName:e.target.value }),
+      onEmail: (e) => this.setState({ fEmail:e.target.value }),
+      onSubject: (e) => this.setState({ fSubject:e.target.value }),
+      onMessage: (e) => this.setState({ fMessage:e.target.value }),
+      showError: S.showError,
+      sendLabel: S.sent ? 'Message Sent ✓' : 'Send Message',
+      sendBg: S.sent ? 'var(--chart-2)' : 'var(--primary)',
+      sendShadow: S.sent ? 'color-mix(in srgb,var(--chart-2) 34%,transparent)' : 'color-mix(in srgb,var(--primary) 30%,transparent)',
+      onSend: () => {
+        if (S.sent) return;
+        const emailOk = /.+@.+\..+/.test(S.fEmail);
+        if (!S.fName.trim() || !emailOk || !S.fMessage.trim()) { this.setState({ showError:true }); return; }
+        this.setState({ sent:true, showError:false, fName:'', fEmail:'', fSubject:'', fMessage:'' });
+        this._sentT = setTimeout(() => { if (this._alive) this.setState({ sent:false }); }, 4000);
+      },
     };
   }
 }
