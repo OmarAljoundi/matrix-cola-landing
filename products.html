@@ -72,6 +72,9 @@ a:hover{color:var(--secondary);}
  [data-puline] span{margin-inline:auto !important;}
  [data-ptext] > p{max-width:52ch !important;margin-inline:auto !important;}
  [data-ice]{opacity:.4 !important;}
+ /* stacked rows sit close together — tuck the flavor glow behind the card so
+    neighbouring rows' glows don't wash the whole viewport in colour */
+ [data-pglow]{inset:22% 26% !important;filter:blur(22px) !important;opacity:.3 !important;}
 }
 @media (max-width:700px){
  [data-pad]{padding-inline:16px !important;}
@@ -79,7 +82,6 @@ a:hover{color:var(--secondary);}
  [data-ccircle]{width:min(84vw,340px) !important;height:min(84vw,340px) !important;box-shadow:0 14px 30px color-mix(in srgb,var(--foreground) 10%,transparent),inset 0 1px 0 var(--card) !important;}
  [data-canimg]{height:min(56vw,250px) !important;}
  [data-ptext] > p{font-size:16px !important;}
- [data-pglow]{inset:16% 20% !important;filter:blur(26px) !important;opacity:.5 !important;}
 }
 /* Below 560px: size pills become a 2x2 grid so they always fit and stay tappable */
 @media (max-width:560px){
@@ -88,16 +90,6 @@ a:hover{color:var(--secondary);}
 }
 @media (max-width:480px){
  [data-hlogo]{height:34px !important;}
-}
-/* Touch devices: kill the GPU-heavy effects. Huge blur() layers, backdrop-filter and the
-   per-can fizz overlay tank scroll performance on mobile, so drop them there. */
-@media (pointer:coarse){
- [data-blob]{filter:none !important;opacity:.10 !important;}
- header > div{backdrop-filter:none !important;-webkit-backdrop-filter:none !important;}
- [data-fizz]{display:none !important;}
- [data-spotlight],[data-fizzcanvas]{display:none !important;}
- [data-pglow]{inset:22% 26% !important;filter:blur(22px) !important;opacity:.32 !important;}
- [data-ccircle]{box-shadow:0 10px 24px color-mix(in srgb,var(--foreground) 9%,transparent),inset 0 1px 0 var(--card) !important;}
 }
 @media (prefers-reduced-motion: reduce){*{animation-duration:.001ms !important;animation-iteration-count:1 !important;animation-delay:0ms !important;transition-duration:.001ms !important;}}
 </style>
@@ -284,16 +276,10 @@ class Component extends DCLogic {
     this.setupReveals(R);
     this.setupHeadings(R);
     this.setupCanEntrance(R);
-    // Touch devices choke on the ~150 animated bubble nodes, the fizz canvas rAF and the
-    // giant blur layers. Reveals/headings stay; the ambient eye-candy is desktop-only.
-    if (!this._coarse) {
-      this.setupBubbles(R);
-      this.setupFizz(R);
-      this.setupCursorFizz(R);
-      this.setupCanTilt(R);
-    } else {
-      this._fizzBar = document.querySelector('[data-scrollfizz]');
-    }
+    this.setupBubbles(R);
+    this.setupFizz(R);
+    this.setupCursorFizz(R);
+    this.setupCanTilt(R);
     this._sweep = () => {
       if (this._pending) this._pending.forEach(el => { if (el.getBoundingClientRect().bottom < 60) this._instantShow(el); });
       if (this._pendingH) this._pendingH.forEach(h => { if (h.getBoundingClientRect().bottom < 60) this._instantHead(h); });
@@ -303,12 +289,17 @@ class Component extends DCLogic {
     this.blobs = Array.prototype.slice.call(document.querySelectorAll('[data-blob]'));
     this.iceLayers = Array.prototype.slice.call(document.querySelectorAll('[data-ice]'));
 
-    this._onScroll = () => { const s = window.scrollY > 80; if (s !== this.state.scrolled) this.setState({ scrolled:s }); if (!this.smoothing) { this.smoothY = this.targetY = window.scrollY; } if (this._sweep) this._sweep(); };
+    this._onScroll = () => {
+      const s = window.scrollY > 80; if (s !== this.state.scrolled) this.setState({ scrolled:s });
+      this.smoothY = window.scrollY;
+      if (this._sweep) this._sweep();
+    };
     window.addEventListener('scroll', this._onScroll, { passive:true });
     this._mqN = window.matchMedia ? matchMedia('(max-width:900px)') : null;
     if (this._mqN) { this._onMq = () => this.setState({ narrow:this._mqN.matches }); this._onMq(); this._mqN.addEventListener('change', this._onMq); }
 
-    if (!R) { this.setupMagnetic(); this.setupSmoothScroll(); this.smoothY = this.targetY = window.scrollY; this.py = this.smoothY; this.loop(); }
+    // Native scrolling (no wheel hijack); the rAF loop drives parallax + progress bar.
+    if (!R) { this.setupMagnetic(); this.smoothY = window.scrollY; this.py = this.smoothY; this.loop(); }
   }
 
   componentWillUnmount(){
@@ -652,36 +643,17 @@ class Component extends DCLogic {
     });
   }
 
-  setupSmoothScroll(){
-    // Touch devices have their own momentum scrolling; hijacking it causes jitter/vibration.
-    if (window.matchMedia && matchMedia('(pointer:coarse)').matches) { this.smoothing = false; return; }
-    const maxY = () => document.documentElement.scrollHeight - window.innerHeight;
-    this.smoothing = false;
-    this._wheel = (e) => {
-      if (e.ctrlKey || Math.abs(e.deltaY) < 1) return;
-      if (maxY() <= 0) return;
-      this.targetY = Math.max(0, Math.min(maxY(), this.targetY + e.deltaY));
-      this.smoothing = true; e.preventDefault();
-    };
-    window.addEventListener('wheel', this._wheel, { passive:false });
-  }
+  _updateFizzBar(){ if (!this._fizzBar) return; const vh = window.innerHeight; const mx = document.documentElement.scrollHeight - vh; const p = mx > 0 ? Math.max(0, Math.min(1, window.scrollY / mx)) : 0; this._fizzBar.style.transform = 'scaleX(' + p.toFixed(4) + ')'; }
 
   loop(){
+    // Desktop only — native scrolling, this just drives the parallax + progress bar.
     const step = () => {
-      if (this.smoothing) {
-        this.smoothY += (this.targetY - this.smoothY) * 0.1;
-        if (Math.abs(this.targetY - this.smoothY) < 0.4) { this.smoothY = this.targetY; this.smoothing = false; }
-        window.scrollTo(0, this.smoothY);
-      } else { this.smoothY = window.scrollY; }
+      this.smoothY = window.scrollY;
       const vh = window.innerHeight;
-      // Scroll-coupled parallax repaints fixed layers every frame — smooth on desktop,
-      // but fights native momentum scrolling on touch and reads as vibration. Skip it there.
-      if (!this._coarse) {
-        this.blobs.forEach(b => { const rate = parseFloat(b.getAttribute('data-rate') || '1'); b.style.translate = '0 ' + (-this.smoothY * 0.06 * rate).toFixed(1) + 'px'; });
-        this.iceLayers.forEach(ic => { const rate = parseFloat(ic.getAttribute('data-rate') || '20'); ic.style.translate = '0 ' + (-this.smoothY * 0.001 * rate).toFixed(1) + 'px'; });
-        if (this.footLayers && this.footBox) { const ft = this.footBox.getBoundingClientRect().top - vh; this.footLayers.forEach(l => { l.el.style.translate = '0 ' + Math.max(-46, Math.min(46, ft * l.rate)).toFixed(1) + 'px'; }); }
-      }
-      if (this._fizzBar) { const mx = document.documentElement.scrollHeight - vh; const p = mx > 0 ? Math.max(0, Math.min(1, this.smoothY / mx)) : 0; this._fizzBar.style.transform = 'scaleX(' + p.toFixed(4) + ')'; }
+      this.blobs.forEach(b => { const rate = parseFloat(b.getAttribute('data-rate') || '1'); b.style.translate = '0 ' + (-this.smoothY * 0.06 * rate).toFixed(1) + 'px'; });
+      this.iceLayers.forEach(ic => { const rate = parseFloat(ic.getAttribute('data-rate') || '20'); ic.style.translate = '0 ' + (-this.smoothY * 0.001 * rate).toFixed(1) + 'px'; });
+      if (this.footLayers && this.footBox) { const ft = this.footBox.getBoundingClientRect().top - vh; this.footLayers.forEach(l => { l.el.style.translate = '0 ' + Math.max(-46, Math.min(46, ft * l.rate)).toFixed(1) + 'px'; }); }
+      this._updateFizzBar();
       this._raf = requestAnimationFrame(step);
     };
     this._raf = requestAnimationFrame(step);

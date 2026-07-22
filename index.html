@@ -78,14 +78,6 @@ a:hover{color:var(--secondary);}
 @media (max-width:480px){
  [data-hlogo]{height:36px !important;}
 }
-/* Touch devices: kill the GPU-heavy effects (huge blur() layers, backdrop-filter, fizz overlay)
-   that tank scroll performance on mobile. */
-@media (pointer:coarse){
- [data-blob]{filter:none !important;opacity:.10 !important;}
- header > div{backdrop-filter:none !important;-webkit-backdrop-filter:none !important;}
- [data-fizz]{display:none !important;}
- [data-spotlight],[data-fizzcanvas]{display:none !important;}
-}
 @media (prefers-reduced-motion: reduce){*{animation-duration:.001ms !important;animation-iteration-count:1 !important;animation-delay:0ms !important;transition-duration:.001ms !important;}}
 </style>
 <script src="_ds/matrix-d9cd55e2-8b81-4e7c-8034-e43a1b62f733/_ds_bundle.js"></script>
@@ -344,17 +336,11 @@ class Component extends DCLogic {
     this.setupHeadings(R);
     this.setupCanEntrance(R);
     this.setupHeroAssembly(R);
-    // Touch devices choke on the ~150 animated bubble nodes, the fizz canvas rAF and the
-    // giant blur layers. Structural/one-shot animations stay; ambient eye-candy is desktop-only.
-    if (!this._coarse) {
-      this.setupBubbles(R);
-      this.setupFizz(R);
-      this.setupCursorFizz(R);
-      this.setupCanTilt(R);
-      this.setupHeroParallax(R);
-    } else {
-      this._fizzBar = document.querySelector('[data-scrollfizz]');
-    }
+    this.setupBubbles(R);
+    this.setupFizz(R);
+    this.setupCursorFizz(R);
+    this.setupCanTilt(R);
+    this.setupHeroParallax(R);
     this._sweep = () => {
       if (this._pending) this._pending.forEach(el => { if (el.getBoundingClientRect().bottom < 60) this._instantShow(el); });
       if (this._pendingH) this._pendingH.forEach(h => { if (h.getBoundingClientRect().bottom < 60) this._instantHead(h); });
@@ -369,12 +355,17 @@ class Component extends DCLogic {
     this.blobs = Array.prototype.slice.call(document.querySelectorAll('[data-blob]'));
     this.flrows = Array.prototype.slice.call(document.querySelectorAll('[data-flrow]'));
 
-    this._onScroll = () => { const s = window.scrollY > 80; if (s !== this.state.scrolled) this.setState({ scrolled:s }); if (!this.smoothing) { this.smoothY = this.targetY = window.scrollY; } if (this._sweep) this._sweep(); };
+    this._onScroll = () => {
+      const s = window.scrollY > 80; if (s !== this.state.scrolled) this.setState({ scrolled:s });
+      this.smoothY = window.scrollY;
+      if (this._sweep) this._sweep();
+    };
     window.addEventListener('scroll', this._onScroll, { passive:true });
     this._mqN = window.matchMedia ? matchMedia('(max-width:700px)') : null;
     if (this._mqN) { this._onMq = () => this.setState({ narrow:this._mqN.matches }); this._onMq(); this._mqN.addEventListener('change', this._onMq); }
 
-    if (!R) { this.setupMagnetic(); this.setupSmoothScroll(); this.smoothY = this.targetY = window.scrollY; this.py = this.smoothY; this.loop(); }
+    // Native scrolling (no wheel hijack); the rAF loop drives parallax + marquee boost + progress bar.
+    if (!R) { this.setupMagnetic(); this.smoothY = window.scrollY; this.py = this.smoothY; this.loop(); }
   }
 
   componentWillUnmount(){
@@ -787,48 +778,32 @@ class Component extends DCLogic {
     });
   }
 
-  setupSmoothScroll(){
-    // Touch devices have their own momentum scrolling; hijacking it causes jitter/vibration.
-    if (window.matchMedia && matchMedia('(pointer:coarse)').matches) { this.smoothing = false; return; }
-    const maxY = () => document.documentElement.scrollHeight - window.innerHeight;
-    this.smoothing = false;
-    this._wheel = (e) => {
-      if (e.ctrlKey || Math.abs(e.deltaY) < 1) return;
-      if (maxY() <= 0) return;
-      this.targetY = Math.max(0, Math.min(maxY(), this.targetY + e.deltaY));
-      this.smoothing = true; e.preventDefault();
-    };
-    window.addEventListener('wheel', this._wheel, { passive:false });
-  }
+  setupSmoothScroll(){ /* removed: native scrolling only */ }
 
   applyMq(){ (this.tracks || []).forEach(r => { if (r.anim) r.anim.playbackRate = r.hover ? 0.15 : this.boost; }); }
 
+  _updateFizzBar(){ if (!this._fizzBar) return; const vh = window.innerHeight; const mx = document.documentElement.scrollHeight - vh; const p = mx > 0 ? Math.max(0, Math.min(1, window.scrollY / mx)) : 0; this._fizzBar.style.transform = 'scaleX(' + p.toFixed(4) + ')'; }
+
   loop(){
+    // Desktop only — native scrolling; this drives the scroll-velocity marquee boost,
+    // hero skew/parallax and progress bar.
     const step = () => {
-      if (this.smoothing) {
-        this.smoothY += (this.targetY - this.smoothY) * 0.1;
-        if (Math.abs(this.targetY - this.smoothY) < 0.4) { this.smoothY = this.targetY; this.smoothing = false; }
-        window.scrollTo(0, this.smoothY);
-      } else { this.smoothY = window.scrollY; }
+      this.smoothY = window.scrollY;
       const raw = this.smoothY - this.py; this.py = this.smoothY;
       this.vel += (raw - this.vel) * 0.25;
       this.targetBoost = Math.min(1.6, 1 + Math.abs(this.vel) * 0.03);
       this.boost += (this.targetBoost - this.boost) * 0.12; this.applyMq();
       const vh = window.innerHeight;
-      // Scroll-coupled parallax repaints fixed/large layers every frame — smooth on desktop,
-      // but fights native momentum scrolling on touch and reads as vibration. Skip it there.
-      if (!this._coarse) {
-        const sk = Math.max(-4, Math.min(4, this.vel * 0.22));
-        this.heroSkew.forEach(el => { const tx = el.style.getPropertyValue('--px') || '0px', ty = el.style.getPropertyValue('--py') || '0px'; el.style.transform = 'translate(' + tx + ',' + ty + ') skewX(' + sk.toFixed(2) + 'deg)'; });
-        this.flrows.forEach(el => {
-          const base = parseFloat(el.getAttribute('data-base') || '0'), dir = parseFloat(el.getAttribute('data-dir') || '1');
-          const r = el.getBoundingClientRect(); const prog = ((r.top + r.height / 2) - vh / 2) / vh;
-          el.style.transform = 'translateX(' + (base + dir * Math.max(-40, Math.min(40, -prog * 64))).toFixed(1) + 'px)';
-        });
-        this.blobs.forEach(b => { const rate = parseFloat(b.getAttribute('data-rate') || '1'); b.style.translate = '0 ' + (-this.smoothY * 0.06 * rate).toFixed(1) + 'px'; });
-        if (this.footLayers && this.footBox) { const ft = this.footBox.getBoundingClientRect().top - vh; this.footLayers.forEach(l => { l.el.style.translate = '0 ' + Math.max(-46, Math.min(46, ft * l.rate)).toFixed(1) + 'px'; }); }
-      }
-      if (this._fizzBar) { const mx = document.documentElement.scrollHeight - vh; const p = mx > 0 ? Math.max(0, Math.min(1, this.smoothY / mx)) : 0; this._fizzBar.style.transform = 'scaleX(' + p.toFixed(4) + ')'; }
+      const sk = Math.max(-4, Math.min(4, this.vel * 0.22));
+      this.heroSkew.forEach(el => { const tx = el.style.getPropertyValue('--px') || '0px', ty = el.style.getPropertyValue('--py') || '0px'; el.style.transform = 'translate(' + tx + ',' + ty + ') skewX(' + sk.toFixed(2) + 'deg)'; });
+      this.flrows.forEach(el => {
+        const base = parseFloat(el.getAttribute('data-base') || '0'), dir = parseFloat(el.getAttribute('data-dir') || '1');
+        const r = el.getBoundingClientRect(); const prog = ((r.top + r.height / 2) - vh / 2) / vh;
+        el.style.transform = 'translateX(' + (base + dir * Math.max(-40, Math.min(40, -prog * 64))).toFixed(1) + 'px)';
+      });
+      this.blobs.forEach(b => { const rate = parseFloat(b.getAttribute('data-rate') || '1'); b.style.translate = '0 ' + (-this.smoothY * 0.06 * rate).toFixed(1) + 'px'; });
+      if (this.footLayers && this.footBox) { const ft = this.footBox.getBoundingClientRect().top - vh; this.footLayers.forEach(l => { l.el.style.translate = '0 ' + Math.max(-46, Math.min(46, ft * l.rate)).toFixed(1) + 'px'; }); }
+      this._updateFizzBar();
       this._raf = requestAnimationFrame(step);
     };
     this._raf = requestAnimationFrame(step);
