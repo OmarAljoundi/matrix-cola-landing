@@ -89,6 +89,16 @@ a:hover{color:var(--secondary);}
 @media (max-width:480px){
  [data-hlogo]{height:34px !important;}
 }
+/* Touch devices: kill the GPU-heavy effects. Huge blur() layers, backdrop-filter and the
+   per-can fizz overlay tank scroll performance on mobile, so drop them there. */
+@media (pointer:coarse){
+ [data-blob]{filter:none !important;opacity:.10 !important;}
+ header > div{backdrop-filter:none !important;-webkit-backdrop-filter:none !important;}
+ [data-fizz]{display:none !important;}
+ [data-spotlight],[data-fizzcanvas]{display:none !important;}
+ [data-pglow]{inset:22% 26% !important;filter:blur(22px) !important;opacity:.32 !important;}
+ [data-ccircle]{box-shadow:0 10px 24px color-mix(in srgb,var(--foreground) 9%,transparent),inset 0 1px 0 var(--card) !important;}
+}
 @media (prefers-reduced-motion: reduce){*{animation-duration:.001ms !important;animation-iteration-count:1 !important;animation-delay:0ms !important;transition-duration:.001ms !important;}}
 </style>
 <script src="_ds/matrix-d9cd55e2-8b81-4e7c-8034-e43a1b62f733/_ds_bundle.js"></script>
@@ -274,10 +284,16 @@ class Component extends DCLogic {
     this.setupReveals(R);
     this.setupHeadings(R);
     this.setupCanEntrance(R);
-    this.setupBubbles(R);
-    this.setupFizz(R);
-    this.setupCursorFizz(R);
-    this.setupCanTilt(R);
+    // Touch devices choke on the ~150 animated bubble nodes, the fizz canvas rAF and the
+    // giant blur layers. Reveals/headings stay; the ambient eye-candy is desktop-only.
+    if (!this._coarse) {
+      this.setupBubbles(R);
+      this.setupFizz(R);
+      this.setupCursorFizz(R);
+      this.setupCanTilt(R);
+    } else {
+      this._fizzBar = document.querySelector('[data-scrollfizz]');
+    }
     this._sweep = () => {
       if (this._pending) this._pending.forEach(el => { if (el.getBoundingClientRect().bottom < 60) this._instantShow(el); });
       if (this._pendingH) this._pendingH.forEach(h => { if (h.getBoundingClientRect().bottom < 60) this._instantHead(h); });
@@ -289,7 +305,7 @@ class Component extends DCLogic {
 
     this._onScroll = () => { const s = window.scrollY > 80; if (s !== this.state.scrolled) this.setState({ scrolled:s }); if (!this.smoothing) { this.smoothY = this.targetY = window.scrollY; } if (this._sweep) this._sweep(); };
     window.addEventListener('scroll', this._onScroll, { passive:true });
-    this._mqN = window.matchMedia ? matchMedia('(max-width:820px)') : null;
+    this._mqN = window.matchMedia ? matchMedia('(max-width:900px)') : null;
     if (this._mqN) { this._onMq = () => this.setState({ narrow:this._mqN.matches }); this._onMq(); this._mqN.addEventListener('change', this._onMq); }
 
     if (!R) { this.setupMagnetic(); this.setupSmoothScroll(); this.smoothY = this.targetY = window.scrollY; this.py = this.smoothY; this.loop(); }

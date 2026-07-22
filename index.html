@@ -78,6 +78,14 @@ a:hover{color:var(--secondary);}
 @media (max-width:480px){
  [data-hlogo]{height:36px !important;}
 }
+/* Touch devices: kill the GPU-heavy effects (huge blur() layers, backdrop-filter, fizz overlay)
+   that tank scroll performance on mobile. */
+@media (pointer:coarse){
+ [data-blob]{filter:none !important;opacity:.10 !important;}
+ header > div{backdrop-filter:none !important;-webkit-backdrop-filter:none !important;}
+ [data-fizz]{display:none !important;}
+ [data-spotlight],[data-fizzcanvas]{display:none !important;}
+}
 @media (prefers-reduced-motion: reduce){*{animation-duration:.001ms !important;animation-iteration-count:1 !important;animation-delay:0ms !important;transition-duration:.001ms !important;}}
 </style>
 <script src="_ds/matrix-d9cd55e2-8b81-4e7c-8034-e43a1b62f733/_ds_bundle.js"></script>
@@ -336,11 +344,17 @@ class Component extends DCLogic {
     this.setupHeadings(R);
     this.setupCanEntrance(R);
     this.setupHeroAssembly(R);
-    this.setupBubbles(R);
-    this.setupFizz(R);
-    this.setupCursorFizz(R);
-    this.setupCanTilt(R);
-    this.setupHeroParallax(R);
+    // Touch devices choke on the ~150 animated bubble nodes, the fizz canvas rAF and the
+    // giant blur layers. Structural/one-shot animations stay; ambient eye-candy is desktop-only.
+    if (!this._coarse) {
+      this.setupBubbles(R);
+      this.setupFizz(R);
+      this.setupCursorFizz(R);
+      this.setupCanTilt(R);
+      this.setupHeroParallax(R);
+    } else {
+      this._fizzBar = document.querySelector('[data-scrollfizz]');
+    }
     this._sweep = () => {
       if (this._pending) this._pending.forEach(el => { if (el.getBoundingClientRect().bottom < 60) this._instantShow(el); });
       if (this._pendingH) this._pendingH.forEach(h => { if (h.getBoundingClientRect().bottom < 60) this._instantHead(h); });
